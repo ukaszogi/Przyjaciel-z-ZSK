@@ -4,6 +4,8 @@ const config = require("./auth.json");
 const databass = require("./data.json");
 const fs = require('fs')
 
+var czyodp = 0;
+
 client.on('ready', () => {
  console.log(`Logged in as ${client.user.tag}!`);
  });
@@ -17,6 +19,14 @@ let role1g = msg.guild.roles.find(role => role.name === "1g");
 let role2g = msg.guild.roles.find(role => role.name === "2g");
 let fru = msg.content.replace(command,"").trim();
 let datajson = JSON.parse(fs.readFileSync("./data.json", "utf8"));
+
+if (czyodp==1){
+	if (command=="tak") {msg.channel.send("@1g macie sprawdzian z "+databass.Nextone); czyodp=0;}
+	else if (command=="nie") {msg.channel.send("pewnie zapomną :("); czyodp=0;}
+}
+if (czyodp==2){
+	if (command=="tak") {msg.channel.send(role2g+"ok"); czyodp=0;}
+}
 
 switch (command) {
 	case "ping":
@@ -43,7 +53,8 @@ switch (command) {
 		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
     			if (err) console.error(err)
   		});
-		msg.channel.send("zmiana sprawdziannu na "+fru);
+		msg.channel.send("zmiana sprawdziannu na "+fru+"\nczy powiadomić grupę o tym?");
+		czyodp=1;
 		break;
 	case "upspr2":
 		datajson.Nextone = fru;
@@ -51,7 +62,8 @@ switch (command) {
 		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
     			if (err) console.error(err)
   		});
-		msg.channel.send("zmiana sprawdziannu na "+fru);
+		msg.channel.send("zmiana sprawdziannu na "+fru+"\nczy powiadomić grupę o tym?");
+		czyodp=1;
 		break;
 	case "powiedz":
 		let text = args.join(" ");
