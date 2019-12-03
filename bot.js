@@ -101,8 +101,6 @@ switch (command) {
 		msg.delete();
 		msg.channel.send(text);
 		break;
-	case "stop":
-		client.logout();
 }
 
  });
