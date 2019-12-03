@@ -34,7 +34,18 @@ switch (command) {
 	case "spr1":
 		msg.channel.send(/*/role1g+/*/databass.Nextone);
 		break;
+	case "spr2":
+		msg.channel.send(/*/role2g+/*/databass.Nexttwo);
+		break;
 	case "upspr1":
+		datajson.Nextone = fru;
+		databass.Nextone = fru;
+		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
+    			if (err) console.error(err)
+  		});
+		msg.channel.send("zmiana sprawdziannu na "+fru);
+		break;
+	case "upspr2":
 		datajson.Nextone = fru;
 		databass.Nextone = fru;
 		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
