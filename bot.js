@@ -16,24 +16,31 @@ let role1g = msg.guild.roles.find(role => role.name === "1g");
 let role2g = msg.guild.roles.find(role => role.name === "2g");
 let fru = msg.content.replace(command,"").trim();
 
-switch (command) {
-	case 'ping':
+switch (msg.content) {
+	case "ping":
 		msg.reply('pong');
-	case 'mucha':
+		break;
+	case "mucha":
 		msg.channel.send("rucha karalucha");
-	case 'test1':
+		break;
+	case "test1":
 		msg.channel.send(role1g+" ma test w środę");
-	case 'test2':
+		break;
+	case "test2":
 		msg.channel.send(role2g+" ma test w środę");
-	case 'spr1':
+		break;
+	case "spr1":
 		msg.channel.send(role1g+databass.Nextone);
-	case 'upspr1':
+		break;
+	case "upspr1":
 		databass.Nextone = fru;
 		msg.channel.send("zmiana sprawdziannu "+role1g+" na "+fru);
-	case 'powiedz':
+		break;
+	case "powiedz":
 		let text = args.join(" ");
 		msg.delete();
 		msg.channel.send(text);
+		break;
 }
 
  });
