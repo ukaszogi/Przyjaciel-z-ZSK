@@ -17,6 +17,8 @@ const args = msg.content.trim().split(/ +/g);
 const command = args.shift().toLowerCase();
 let role1g = msg.guild.roles.find(role => role.name === "1g");
 let role2g = msg.guild.roles.find(role => role.name === "2g");
+let role1gs = msg.guild.roles.find(role => role.name === "1gs");
+let role2gs = msg.guild.roles.find(role => role.name === "2gs");
 let fru = msg.content.replace(command,"").trim();
 let datajson = JSON.parse(fs.readFileSync("./data.json", "utf8"));
 
@@ -50,17 +52,28 @@ switch (command) {
 		break;
 	case "powiadomienie-1":
 		msg.member.addRole(role1g).catch(console.error)
-		msg.channel.send("dodano rolę! :)");
+		msg.channel.send("będziesz otrzymywać powiadomienia! :)");
+		msg.member.removeRole(role1gs).catch(console.error)
 		break;
 	case "powiadomienie-2":
 		msg.member.addRole(role2g).catch(console.error)
-		msg.channel.send("dodano rolę! :)");
+		msg.channel.send("będziesz otrzymywać powiadomienia! :)");
+		msg.member.removeRole(role2gs).catch(console.error)
 		break;
-	case "nie-chce-powiadomień":
-		if(msg.member.roles.some(r=>["1g","2g"].includes(r.name)) ) {
-			msg.member.removeRole(role1g).catch(console.error);
-			msg.member.removeRole(role2g).catch(console.error);
-			msg.channel.send("usunięto rolę! :)");
+	case "nie-chce-powiadomień-1":
+		if(msg.member.roles.has(role1g.id)) {
+			msg.member.addRole(role1gs).catch(console.error)
+			msg.channel.send("przypisano rolę bez powiadomień! :)");
+			msg.member.removeRole(role1g).catch(console.error)
+		} else {
+			msg.channel.send("nie dostajesz powiadomień");
+		}
+		break;
+	case "nie-chce-powiadomień-2":
+		if(msg.member.roles.has(role2g.id)) {
+			msg.member.addRole(role2gs).catch(console.error)
+			msg.channel.send("przypisano rolę bez powiadomień! :)");
+			msg.member.removeRole(role2g).catch(console.error)
 		} else {
 			msg.channel.send("nie dostajesz powiadomień");
 		}
