@@ -25,7 +25,8 @@ if (czyodp==1){
 	else if (command=="nie") {msg.channel.send("pewnie zapomną :("); czyodp=0;}
 }
 if (czyodp==2){
-	if (command=="tak") {msg.channel.send(role2g+"ok"); czyodp=0;}
+	if (command=="tak") {msg.channel.send("@2g macie sprawdzian z "+databass.Nextone); czyodp=0;}
+	else if (command=="nie") {msg.channel.send("pewnie zapomną :("); czyodp=0;}
 }
 
 switch (command) {
@@ -47,6 +48,23 @@ switch (command) {
 	case "spr2":
 		msg.channel.send(/*/role2g+/*/databass.Nexttwo);
 		break;
+	case "powiadomienie-1":
+		msg.member.addRole(role1g).catch(console.error)
+		msg.channel.send("dodano rolę! :)");
+		break;
+	case "powiadomienie-2":
+		msg.member.addRole(role2g).catch(console.error)
+		msg.channel.send("dodano rolę! :)");
+		break;
+	case "nie-chce-powiadomień":
+		if(msg.member.roles.some(r=>["1g","2g"].includes(r.name)) ) {
+			msg.member.removeRole(role1g).catch(console.error);
+			msg.member.removeRole(role2g).catch(console.error);
+			msg.channel.send("usunięto rolę! :)");
+		} else {
+			msg.channel.send("nie dostajesz powiadomień");
+		}
+		break;
 	case "upspr1":
 		datajson.Nextone = fru;
 		databass.Nextone = fru;
@@ -63,7 +81,7 @@ switch (command) {
     			if (err) console.error(err)
   		});
 		msg.channel.send("zmiana sprawdziannu na "+fru+"\nczy powiadomić grupę o tym?");
-		czyodp=1;
+		czyodp=2;
 		break;
 	case "powiedz":
 		let text = args.join(" ");
