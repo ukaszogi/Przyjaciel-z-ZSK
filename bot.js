@@ -16,31 +16,25 @@ let role1g = msg.guild.roles.find(role => role.name === "1g");
 let role2g = msg.guild.roles.find(role => role.name === "2g");
 let fru = msg.content.replace(command,"").trim();
 
-if (msg.content.toLowerCase() === 'ping') {
- msg.reply('pong');
- }
-
-if (msg.content.toLowerCase().startsWith("mucha")) {
- msg.reply("rucha karalucha");
- }
-
-if (msg.content.toLowerCase().startsWith("test1")) {
- msg.channel.send(role1g+" ma test w środę");
- }
-
-if (msg.content.toLowerCase().startsWith("test2")) {
- msg.channel.send(role2g+" ma test w środę");
-
+switch (command) {
+	case 'ping':
+		msg.reply('pong');
+	case 'mucha':
+		msg.channel.send("rucha karalucha");
+	case 'test1':
+		msg.channel.send(role1g+" ma test w środę");
+	case 'test2':
+		msg.channel.send(role2g+" ma test w środę");
+	case 'spr1':
+		msg.channel.send(role1g+databass.Nextone);
+	case 'upspr1':
+		databass.Nextone = fru;
+		msg.channel.send("zmiana sprawdziannu "+role1g+" na "+fru);
+	case 'powiedz':
+		let text = args.join(" ");
+		msg.delete();
+		msg.channel.send(text);
 }
-if (msg.content.toLowerCase().startsWith("spr1")) {
- msg.channel.send(role1g+databass.Nextone);
- }
-
-
-if (msg.content.toLowerCase().startsWith("upspr1")) {
- databass.Nextone = fru;
-msg.channel.send("zmiana sprawdziannu "+role1g+" na "+fru);
- }
 
  });
 
