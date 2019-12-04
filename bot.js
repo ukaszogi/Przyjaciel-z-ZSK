@@ -105,8 +105,14 @@ switch (command) {
 	case "kutas":
 		msg.channel.send("chodzi o kutasa ?");
 		break;
+	case "elo":
+		msg.channel.send("siema");
+		break;
+	case "twoja":
+		if (args[0]=="stara") msg.channel.send("nie bo twoja");
+		break;
 	case "los":
-		if (args[0]!=null)
+		if (args[0]!=null&&Number.isInteger(Math.floor(Math.random()*args[0])))
 			msg.channel.send(Math.floor(Math.random()*args[0]));
 		else msg.channel.send("wpisz liczbe np. los 100");
 		break;
@@ -122,6 +128,11 @@ switch (command) {
 	case "big-butts":
 	case "nsfw":
 		msg.channel.send("( ͡° ͜ʖ ͡°)");
+		break;
+	case "kasza":
+		if (msg.author.id=="340604514820161536")
+			msg.channel.send("<@493080797943955476> ty cieniasie");
+		else msg.reply(" jest cieniasem")
 		break;
 }
 
