@@ -60,7 +60,7 @@ switch (command) {
 		msg.channel.send("będziesz otrzymywać powiadomienia! :)");
 		msg.member.removeRole(role2gs).catch(console.error)
 		break;
-	case "nie-chce-powiadomień-1":
+	case "nie-chce-powiadomien-1":
 		if(msg.member.roles.has(role1g.id)) {
 			msg.member.addRole(role1gs).catch(console.error)
 			msg.channel.send("przypisano rolę bez powiadomień! :)");
@@ -69,7 +69,7 @@ switch (command) {
 			msg.channel.send("nie dostajesz powiadomień");
 		}
 		break;
-	case "nie-chce-powiadomień-2":
+	case "nie-chce-powiadomien-2":
 		if(msg.member.roles.has(role2g.id)) {
 			msg.member.addRole(role2gs).catch(console.error)
 			msg.channel.send("przypisano rolę bez powiadomień! :)");
@@ -100,6 +100,28 @@ switch (command) {
 		let text = args.join(" ");
 		msg.delete();
 		msg.channel.send(text);
+		break;
+	case "penis":
+	case "kutas":
+		msg.channel.send("chodzi o kutasa ?");
+		break;
+	case "los":
+		if (args[0]!=null)
+			msg.channel.send(Math.floor(Math.random()*args[0]));
+		else msg.channel.send("wpisz liczbe np. los 100");
+		break;
+	case "mam-duzego?":
+		if (Math.floor(Math.random()*2)==0) msg.channel.send("tak");
+		else msg.channel.send("nie");
+		break;
+	case "mam-malego?":
+		if (Math.floor(Math.random()*2)==0) msg.channel.send("tak");
+		else msg.channel.send("nie");
+		break;
+	case "sex":
+	case "big-butts":
+	case "nsfw":
+		msg.channel.send("( ͡° ͜ʖ ͡°)");
 		break;
 }
 
