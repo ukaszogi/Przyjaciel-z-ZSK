@@ -131,7 +131,7 @@ switch (command) {
 		break;
 	case "kasza":
 		if (msg.author.id=="340604514820161536")
-			msg.channel.send("<@493080797943955476> ty cieniasie");
+			msg.channel.send("<@493080797943955476> ty cieniasie (tak na prawdę, to nie)");
 		else msg.reply(" jest cieniasem")
 		break;
 }
