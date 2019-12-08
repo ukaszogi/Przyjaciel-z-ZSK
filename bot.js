@@ -33,6 +33,7 @@ client.on('message', msg => {
 		else if (command=="nie") {msg.channel.send("pewnie zapomną :("); czyodp=0;}
 	}
 
+<<<<<<< HEAD
 	switch (command) {
 		case "ping":
 			msg.reply('pong');
@@ -145,6 +146,114 @@ client.on('message', msg => {
 			break;
 	}
 });
+=======
+switch (command) {
+	case "ping":
+		msg.reply('pong');
+		break;
+	case "mucha":
+		msg.channel.send("rucha karalucha");
+		break;
+	case "test1":
+		msg.channel.send(/*/role1g+/*/" ma test w środę");
+		break;
+	case "test2":
+		msg.channel.send(/*/role2g+/*/" ma test w środę");
+		break;
+	case "spr1":
+		msg.channel.send(/*/role1g+/*/databass.Nextone);
+		break;
+	case "spr2":
+		msg.channel.send(/*/role2g+/*/databass.Nexttwo);
+		break;
+	case "powiadomienie-1":
+		msg.member.addRole(role1g).catch(console.error)
+		msg.channel.send("będziesz otrzymywać powiadomienia! :)");
+		msg.member.removeRole(role1gs).catch(console.error)
+		break;
+	case "powiadomienie-2":
+		msg.member.addRole(role2g).catch(console.error)
+		msg.channel.send("będziesz otrzymywać powiadomienia! :)");
+		msg.member.removeRole(role2gs).catch(console.error)
+		break;
+	case "nie-chce-powiadomien-1":
+		if(msg.member.roles.has(role1g.id)) {
+			msg.member.addRole(role1gs).catch(console.error)
+			msg.channel.send("przypisano rolę bez powiadomień! :)");
+			msg.member.removeRole(role1g).catch(console.error)
+		} else {
+			msg.channel.send("nie dostajesz powiadomień");
+		}
+		break;
+	case "nie-chce-powiadomien-2":
+		if(msg.member.roles.has(role2g.id)) {
+			msg.member.addRole(role2gs).catch(console.error)
+			msg.channel.send("przypisano rolę bez powiadomień! :)");
+			msg.member.removeRole(role2g).catch(console.error)
+		} else {
+			msg.channel.send("nie dostajesz powiadomień");
+		}
+		break;
+	case "upspr1":
+		datajson.Nextone = fru;
+		databass.Nextone = fru;
+		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
+    			if (err) console.error(err)
+  		});
+		msg.channel.send("zmiana sprawdziannu na "+fru+"\nczy powiadomić grupę o tym?");
+		czyodp=1;
+		break;
+	case "upspr2":
+		datajson.Nextone = fru;
+		databass.Nextone = fru;
+		fs.writeFile("./data.json", JSON.stringify(datajson), (err) => {
+    			if (err) console.error(err)
+  		});
+		msg.channel.send("zmiana sprawdziannu na "+fru+"\nczy powiadomić grupę o tym?");
+		czyodp=2;
+		break;
+	case "powiedz":
+		let text = args.join(" ");
+		msg.delete();
+		msg.channel.send(text);
+		break;
+	case "penis":
+	case "kutas":
+		msg.channel.send("chodzi o kutasa ?");
+		break;
+	case "elo":
+		msg.channel.send("siema");
+		break;
+	case "twoja":
+		if (args[0]=="stara") msg.channel.send("nie bo twoja");
+		break;
+	case "los":
+		if (args[0]!=null&&Number.isInteger(Math.floor(Math.random()*args[0])))
+			msg.channel.send(Math.floor(Math.random()*args[0]));
+		else msg.channel.send("wpisz liczbe np. los 100");
+		break;
+	case "mam-duzego?":
+		if (Math.floor(Math.random()*2)==0) msg.channel.send("tak");
+		else msg.channel.send("nie");
+		break;
+	case "mam-malego?":
+		if (Math.floor(Math.random()*2)==0) msg.channel.send("tak");
+		else msg.channel.send("nie");
+		break;
+	case "sex":
+	case "big-butts":
+	case "nsfw":
+		msg.channel.send("( ͡° ͜ʖ ͡°)");
+		break;
+	case "kasza":
+		if (msg.author.id=="340604514820161536")
+			msg.channel.send("<@493080797943955476> ty cieniasie (tak na prawdę, to nie)");
+		else msg.reply(" jest cieniasem")
+		break;
+}
+
+ });
+>>>>>>> refs/remotes/origin/master
 
 
 client.login(config.Token);
