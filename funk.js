@@ -28,15 +28,50 @@ function krtBlisko(gr, n) {
     }
 }
 
-function sprNew(gr, dane) {
+function zadBlisko(gr, n) {
+    gr-=1;
+    for (i=0, j=0;i<databass.zad[gr].length&&j<n;i++) {
+        if (databass.zad[gr][i].data>d) {
+            console.log(i);
+            console.log(databass.zad[gr][i]);
+            j++;
+        }
+    }
+}
+
+function sprNowy(gr, dane) {
     gr-=1;
     databass.spr[gr].push(dane);
 }
 
-function sprCzystka(gr) {
+function krtNowy(gr, dane) {
+    gr-=1;
+    databass.krt[gr].push(dane);
+}
+
+function zadNowy(gr, dane) {
+    gr-=1;
+    databass.zad[gr].push(dane);
+}
+
+function sprStary(gr) {
     gr -=1;
     for (i=0; databass.spr[gr][i].data < d;i++) {
         databass.spr[gr].shift();
+    }
+}
+
+function krtStary(gr) {
+    gr -=1;
+    for (i=0; databass.krt[gr][i].data < d;i++) {
+        databass.krt[gr].shift();
+    }
+}
+
+function zadStary(gr) {
+    gr -=1;
+    for (i=0; databass.zad[gr][i].data < d;i++) {
+        databass.zad[gr].shift();
     }
 }
 
@@ -49,9 +84,9 @@ d = 201912030
 
 const majma = new Event("202012116", "WF", "PingPong backhand");
 //console.log(majma)
-sprNew(1,majma)
+sprNowy(1,majma)
 //sprBlisko(1,4);
 console.log(databass.spr[0],"\n");
 //console.log(databass.spr[0][4].data)
-sprCzystka(1)
+sprStary(1)
 console.log(databass.spr[0]);
