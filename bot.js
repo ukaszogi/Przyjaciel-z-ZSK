@@ -44,11 +44,20 @@ client.on('messageDelete', async (message) => {
       && (entry.target.id === message.author.id)
       && (entry.createdTimestamp > (Date.now() - 5000))
       && (entry.extra.count >= 1)) {
-    user = entry.executor.username
+    user = entry.executor.tag
   } else { 
-    user = message.author.username
+    user = message.author.tag
   }
-  logs.send(`Wiadomość została usunięta w ${message.channel.name} przez ${user}`);
+
+let DeleteEmbed = new Discord.RichEmbed()
+  .setTitle("**DELETED MESSAGE**")
+  .setColor("#fc3c3c")
+  .addField("Author", user, true)
+  .addField("Channel", message.channel, true)
+  .addField("Message", message.content)
+  .setFooter(`Message ID: ${message.id} | Author ID: ${message.author.id}`);
+
+  logs.send(DeleteEmbed);
 })
 
 client.login(config.Token);
