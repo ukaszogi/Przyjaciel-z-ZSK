@@ -30,5 +30,26 @@ fs.readdir("./commands/", (err, files) => {
   });
 });
 
+client.on('messageDelete', async (message) => {
+  const logs = message.guild.channels.find(channel => channel.name === "logs");
+  if (message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) {
+    message.guild.createChannel('logs', 'logi');
+  }
+  if (!message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) { 
+    console.log('kanał z logami nie istnieje. Próbowałem go stwrzyć ale nie mam wystarczających permisji')
+  }  
+  const entry = await message.guild.fetchAuditLogs({type: 'MESSAGE_DELETE'}).then(audit => audit.entries.first())
+  let user = ""
+    if (entry.extra.channel.id === message.channel.id
+      && (entry.target.id === message.author.id)
+      && (entry.createdTimestamp > (Date.now() - 5000))
+      && (entry.extra.count >= 1)) {
+    user = entry.executor.username
+  } else { 
+    user = message.author.username
+  }
+  logs.send(`Wiadomość została usunięta w ${message.channel.name} przez ${user}`);
+})
+
 client.login(config.Token);
 
