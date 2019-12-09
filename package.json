@@ -7,6 +7,8 @@
   "dependencies": {
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "discord.js": "^11.5.1",
+    "enmap": "^5.2.3",
+    "node-nmap": "^4.0.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {},
@@ -14,5 +16,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukaszogi/Przyjaciel-z-ZSK.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ukaszogi/Przyjaciel-z-ZSK/issues"
+  },
+  "homepage": "https://github.com/ukaszogi/Przyjaciel-z-ZSK#readme"
 }
