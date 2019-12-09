@@ -17,6 +17,9 @@ function sprBlisko(gr, n) {
             j++;
         }
     }
+    for(i=0 ; i < (w.length) ; i=i+1) {
+        w[i]=(konwersjaEventu(w[i]));
+    }
     return(w);
 }
 
@@ -29,6 +32,9 @@ function krtBlisko(gr, n) {
             j++;
         }
     }
+    for(i=0 ; i < (w.length) ; i=i+1) {
+        w[i]=(konwersjaEventu(w[i]));
+    }
     return(w);
 }
 
@@ -40,6 +46,9 @@ function zadBlisko(gr, n) {
             w.push(databass.zad[gr][i]);
             j++;
         }
+    }
+    for(i=0 ; i < (w.length) ; i=i+1) {
+        w[i]=(konwersjaEventu(w[i]));
     }
     return(w);
 }
@@ -91,13 +100,15 @@ function zadStary(gr) {
 }
 }
 
-
+//Funkcje konwersji
+{
 function konwersjaDaty(dary) {
     return(dary[6]+dary[7]+" "+dary[4]+dary[5]+" "+dary[0]+dary[1]+dary[2]+dary[3]+", lekcja "+dary[8]);
 }
 
 function konwersjaEventu(e) {
     return(konwersjaDaty(e.data)+": "+e.przedmiot+" - "+e.temat);
+}
 }
 
 
@@ -109,17 +120,14 @@ d = 201912030
 //console.log(databass.spr[0]);
 //sprBlisko(1,4);
 
-const majma =  nowyEvent("202012116", "WF", "PingPong backhand");
+//const majma =  nowyEvent("202012116", "WF", "PingPong backhand");
 //console.log(majma)
-sprNowy(1,majma)
+//sprNowy(1,majma)
+
 //sprBlisko(1,4);
-//console.log(databass.spr[0],"\n");
-//console.log(databass.spr[0][4].data)
+
 //sprStary(1)
 //console.log(databass.spr[0]);
 //console.log(konwersjaDaty(databass.spr[0][0].data));
-//console.log(sprBlisko(1,3)+"\n\n");
-w=sprBlisko(1,3);
-for(i=0 ; i < (w.length) ; i=i+1) {
-    console.log(konwersjaEventu(w[i]));
-}
+
+//console.log(sprBlisko(1,3));
