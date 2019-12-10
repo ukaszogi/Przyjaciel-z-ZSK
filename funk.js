@@ -112,6 +112,30 @@ function konwersjaEventu(e) {
 }
 
 
+//Funkcje Sedner
+{
+function sprSend(gr,n) {
+    w = sprBlisko(gr,n)
+    for(i = 0;i<w.length;i++) {
+        msg.send(konwersjaEventu(w[i]))    
+    }
+}
+    
+function krtSend(gr,n) {
+    w = krtBlisko(gr,n)
+    for(i = 0;i<w.length;i++) {
+        msg.send(konwersjaEventu(w[i]))    
+    }
+}
+    
+function zadSend(gr,n) {
+    w = zadBlisko(gr,n)
+    for(i = 0;i<w.length;i++) {
+        msg.send(konwersjaEventu(w[i]))    
+    }
+}
+}
+
 
 const databass = require("./newdata.json");
 var D = new Date();
