@@ -10,8 +10,8 @@ class Event {
 
 //funkcje Blisko
 {
-function sprBlisko(gr, n) {
-    w = []
+exports.sprBlisko = function(gr, n) {
+    w = [];
     gr-=1;
     for (i=0, j=0;i<databass.spr[gr].length&&j<n;i++) {
         if (databass.spr[gr][i].data>d) {
@@ -25,8 +25,8 @@ function sprBlisko(gr, n) {
     return(w);
 }
 
-function krtBlisko(gr, n) {
-    w = []
+exports.krtBlisko = function(gr, n) {
+    w = [];
     gr-=1;
     for (i=0, j=0;i<databass.krt[gr].length&&j<n;i++) {
         if (databass.krt[gr][i].data>d) {
@@ -40,8 +40,8 @@ function krtBlisko(gr, n) {
     return(w);
 }
 
-function zadBlisko(gr, n) {
-    w = []
+exports.zadBlisko = function(gr, n) {
+    w = [];
     gr-=1;
     for (i=0, j=0;i<databass.zad[gr].length&&j<n;i++) {
         if (databass.zad[gr][i].data>d) {
@@ -118,19 +118,19 @@ function konwersjaEventu(e) {
 {
 
 exports.sprSend = function(gr,n,msg) {
-    w = sprBlisko(gr,n);
+    w = exports.sprBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
 	msg.channel.send(w[i])    
     }
 }
 exports.krtSend = function(gr,n,msg) {
-    w = krtBlisko(gr,n);
+    w = exports.krtBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
 	msg.channel.send(w[i])    
     }
 }
 exports.zadSend = function(gr,n,msg) {
-    w = zadBlisko(gr,n);
+    w = exports.zadBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
 	msg.channel.send(w[i])    
     }
@@ -140,7 +140,6 @@ exports.zadSend = function(gr,n,msg) {
 
 var D = new Date();
 var d = D.getFullYear()*100000 + (D.getMonth()+1)*1000 + D.getDate()*10;
-d = 201912030
 //console.log(databass.spr[0]);
 //sprBlisko(1,4);
 
