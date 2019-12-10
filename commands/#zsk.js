@@ -1,5 +1,6 @@
-exports.run = (client, message, args) => {
   const funk = require("./../funk.js");
+exports.run = (client, message, args) => {
+  
   if(args[0]=="spr") {
     if(args[1]=="up") {}
     else if(args[1]=="1") {funk.sprSend(1,parseInt(args[2]),message);}

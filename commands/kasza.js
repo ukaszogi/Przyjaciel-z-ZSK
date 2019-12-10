@@ -1,5 +1,8 @@
 exports.run = (client, message, args) => {
-	if (message.author.id=="340604514820161536")
-		message.channel.send("<@493080797943955476> ty cieniasie");
+	const config = require("./../auth.json");
+	if (message.author.id==config.ownerIDMat||message.author.id==config.ownerIDLuk){
+		let membur = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+		message.channel.send(membur+" ty cieniasie");
+	}
 	else message.reply(" jesteś cieniasem")
 }

@@ -1,3 +1,5 @@
+
+const databass = require("./newdata.json");
 class Event {
     constructor(data,przedmiot,temat) {
         this.data = data;
@@ -114,30 +116,28 @@ function konwersjaEventu(e) {
 
 //Funkcje Sedner
 {
-function sprSend(gr,n,msg) {
-    w = sprBlisko(gr,n)
+
+exports.sprSend = function(gr,n,msg) {
+    w = sprBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
-        msg.send(konwersjaEventu(w[i]))    
+	msg.channel.send(w[i])    
     }
 }
-    
-function krtSend(gr,n,msg) {
-    w = krtBlisko(gr,n)
+exports.krtSend = function(gr,n,msg) {
+    w = krtBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
-        msg.send(konwersjaEventu(w[i]))    
+	msg.channel.send(w[i])    
     }
 }
-    
-function zadSend(gr,n,msg) {
-    w = zadBlisko(gr,n)
+exports.zadSend = function(gr,n,msg) {
+    w = zadBlisko(gr,n);
     for(i = 0;i<w.length;i++) {
-        msg.send(konwersjaEventu(w[i]))    
+	msg.channel.send(w[i])    
     }
-}
 }
 
 
-const databass = require("./newdata.json");
+
 var D = new Date();
 var d = D.getFullYear()*100000 + (D.getMonth()+1)*1000 + D.getDate()*10;
 d = 201912030
@@ -155,3 +155,5 @@ d = 201912030
 //console.log(konwersjaDaty(databass.spr[0][0].data));
 
 //console.log(sprBlisko(1,3));
+}
+
