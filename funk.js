@@ -1,5 +1,7 @@
 
 const databass = require("./newdata.json");
+let datajson = JSON.parse(fs.readFileSync("./data.json", "utf8"));
+fs = require("fs")
 class Event {
     constructor(data,przedmiot,temat) {
         this.data = data;
@@ -61,6 +63,10 @@ exports.zadBlisko = function(gr, n) {
 function sprNowy(gr, dane) {
     gr-=1;
     databass.spr[gr].push(dane);
+    datajson.spr[gr].push(dane);
+    fs.writeFile("./newdata.json", JSON.stringify(datajson), (err) => {
+	    if (err) console.error(err)
+    });
 }
 
 function krtNowy(gr, dane) {
