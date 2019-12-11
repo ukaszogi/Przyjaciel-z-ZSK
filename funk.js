@@ -1,7 +1,7 @@
 
 const databass = require("./newdata.json");
+fs = require("fs");
 let datajson = JSON.parse(fs.readFileSync("./data.json", "utf8"));
-fs = require("fs")
 class Event {
     constructor(data,przedmiot,temat) {
         this.data = data;

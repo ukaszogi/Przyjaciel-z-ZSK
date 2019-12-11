@@ -1,8 +1,18 @@
-  const funk = require("./../funk.js");
+const funk = require("./../funk.js");
 exports.run = (client, message, args) => {
   
   if(args[0]=="spr") {
-    if(args[1]=="up") {}
+    if(args[1]=="up") {
+	switch (args[2]) {
+	    case "1":
+		const dane = message.content.replace("$zsk spr up 1 ",'');
+		message.channel.send(dane);
+		break;
+	    case "2":
+		
+		break;
+	}
+    }
     else if(args[1]=="1") {
 	if (funk.sprBlisko(1,1).length==0) message.channel.send("Brak sprawdzianów")
 	funk.sprSend(1,parseInt(args[2]),message);
