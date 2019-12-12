@@ -1,7 +1,7 @@
 const funk = require("./../funk.js");
 exports.run = (client, message, args) => {
   
-  if(args[0]=="spr") {
+if(args[0]=="spr") {
     if(args[1]=="up") {
         switch (args[2]) {
             case "1":
@@ -22,6 +22,7 @@ exports.run = (client, message, args) => {
             message.channel.send("Błędna grupa");
         }
     }
+    else if(args[1]=="del") {}
     else if(args[1]=="1") {
         if (funk.sprBlisko(1,1).length==0) message.channel.send("Brak sprawdzianów")
         else if (args[2]==0||args.length==2) funk.sprSend(1,1000000,message);
@@ -33,8 +34,8 @@ exports.run = (client, message, args) => {
         else funk.sprSend(2,parseInt(args[2]),message);
     }
     else message.channel.send("Błędna grupa");
-  }
-  else if(args[0]=="krt") {
+}
+else if(args[0]=="krt") {
     if(args[1]=="up") {
         switch (args[2]) {
             case "1":
@@ -55,6 +56,7 @@ exports.run = (client, message, args) => {
             message.channel.send("Błędna grupa");
         }
     }
+    else if(args[1]=="del") {}
     else if(args[1]=="1") {
         if (funk.krtBlisko(1,1).length==0) message.channel.send("Brak kartkówek")
         else if (args[2]==0||args.length==2) funk.krtSend(1,1000000,message);
@@ -65,9 +67,9 @@ exports.run = (client, message, args) => {
         else if (args[2]==0||args.length==2) funk.krtSend(2,1000000,message);
         funk.krtSend(2,parseInt(args[2]),message);
     }
-    else message.channel.send("Błędna grupa");
-  }
-  else if(args[0]=="zad") {
+    else message.channel.send("Błędna grupa/komenda");
+}
+else if(args[0]=="zad") {
     if(args[1]=="up") {
         switch (args[2]) {
             case "1":
@@ -88,6 +90,7 @@ exports.run = (client, message, args) => {
             message.channel.send("Błędna grupa");
         }
     }
+    else if(args[1]=="del") {}
     else if(args[1]=="1") {
         if (funk.zadBlisko(1,1).length==0) message.channel.send("Brak zadań domowych")
         else if (args[2]==0||args.length==2) funk.zadSend(1,1000000,message);
@@ -98,6 +101,7 @@ exports.run = (client, message, args) => {
         else if (args[2]==0||args.length==2) funk.zadSend(2,1000000,message);
         funk.zadSend(2,parseInt(args[2]),message);
     }
-    else message.channel.send("Błędna grupa");
-  }
+    else message.channel.send("Błędna grupa/komenda");
+}
+
 }
