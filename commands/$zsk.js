@@ -25,22 +25,22 @@ exports.run = (client, message, args) => {
   else if(args[0]=="krt") {
     if(args[1]=="up") {}
     else if(args[1]=="1") {
-	if (funk.krtBlisko(1,1).length==0) message.channel.send("Brak sprawdzianów")
+	if (funk.krtBlisko(1,1).length==0) message.channel.send("Brak kartkówek")
 	funk.krtSend(1,parseInt(args[2]),message);
     }
     else if(args[1]=="2") {
-	if (funk.krtBlisko(2,1).length==0) message.channel.send("Brak sprawdzianów")
+	if (funk.krtBlisko(2,1).length==0) message.channel.send("Brak kartkówek")
 	funk.krtSend(2,parseInt(args[2]),message);
     }
   }
   else if(args[0]=="zad") {
     if(args[1]=="up") {}
     else if(args[1]=="1") {
-	if (funk.zadBlisko(1,1).length==0) message.channel.send("Brak sprawdzianów")
+	if (funk.zadBlisko(1,1).length==0) message.channel.send("Brak zadań domowych")
 	funk.zadSend(1,parseInt(args[2]),message);
     }
     else if(args[1]=="2") {
-	if (funk.zadBlisko(1,1).length==0) message.channel.send("Brak sprawdzianów")
+	if (funk.zadBlisko(1,1).length==0) message.channel.send("Brak zadań domowych")
 	funk.zadSend(2,parseInt(args[2]),message);
     }
   }
