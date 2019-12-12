@@ -1,7 +1,5 @@
-
-const databass = require("./newdata.json");
+const databass = require("./data.json");
 fs = require("fs");
-let datajson = JSON.parse(fs.readFileSync("./data.json", "utf8"));
 class Event {
     constructor(data,przedmiot,temat) {
         this.data = data;
@@ -60,23 +58,31 @@ exports.zadBlisko = function(gr, n) {
 
 //funkcje Nowy
 {
-function sprNowy(gr, dane) {
+exports.sprNowy = function(gr, dane) {
     gr-=1;
+    dane = nowyEvent(dane[0],dane[1],dane[2])
     databass.spr[gr].push(dane);
-    datajson.spr[gr].push(dane);
-    fs.writeFile("./newdata.json", JSON.stringify(datajson), (err) => {
-	    if (err) console.error(err)
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
     });
 }
 
-function krtNowy(gr, dane) {
+exports.krtNowy = function(gr, dane) {
     gr-=1;
+    dane = nowyEvent(dane[0],dane[1],dane[2])
     databass.krt[gr].push(dane);
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
+    });
 }
 
-function zadNowy(gr, dane) {
+exports.zadNowy = function(gr, dane) {
     gr-=1;
+    dane = nowyEvent(dane[0],dane[1],dane[2])
     databass.zad[gr].push(dane);
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
+    });
 }
 
 function nowyEvent(data,przedmiot,temat) {
@@ -111,11 +117,14 @@ function zadStary(gr) {
 //Funkcje konwersji
 {
 function konwersjaDaty(dary) {
-    return(dary[6]+dary[7]+" "+dary[4]+dary[5]+" "+dary[0]+dary[1]+dary[2]+dary[3]+", lekcja "+dary[8]);
+    if(dary[8]=="0")
+        return(dary[6]+dary[7]+" "+dary[4]+dary[5]+" "+dary[0]+dary[1]+dary[2]+dary[3]+", cały dzień");
+    else
+        return(dary[6]+dary[7]+" "+dary[4]+dary[5]+" "+dary[0]+dary[1]+dary[2]+dary[3]+", lekcja "+dary[8]);
 }
 
 function konwersjaEventu(e) {
-    return(konwersjaDaty(e.data)+": "+e.przedmiot+" - "+e.temat);
+    return(konwersjaDaty(e.data)+": \t"+e.przedmiot+" - "+e.temat);
 }
 }
 
