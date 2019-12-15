@@ -18,6 +18,14 @@ if(args[0]=="spr") {
             message.channel.send(warto[2]);
             funk.sprNowy(2,warto)
             break;
+            case "0":
+            warto = [args[3],args[4],message.content.replace("$zsk spr up 0 "+args[3]+" "+args[4]+" ",'')];
+            message.channel.send(warto[0]);
+            message.channel.send(warto[1]);
+            message.channel.send(warto[2]);
+            funk.sprNowy(1,warto)
+            funk.sprNowy(2,warto)
+            break;
             default:
             message.channel.send("Błędna grupa");
         }
