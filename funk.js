@@ -92,25 +92,55 @@ function nowyEvent(data,przedmiot,temat) {
 
 //funkcje Stary
 {
-function sprStary(gr) {
-    gr -=1;
-    for (i=0; databass.spr[gr][i].data < d;i++) {
-        databass.spr[gr].shift();
+exports.sprStary = function(gr,msg) {
+    gr -=1; var l = 0;
+    for (i=0; i < databass.spr[gr].length ;i++) {
+        if(databass.spr[gr][i].data < d) {
+            databass.spr[gr].splice(i,1);
+            l++;i--;
+        }
     }
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
+    });
+    l=l.toString()
+    if(l=="1") msg.channel.send("Usunięto "+l+" wydarzenie");
+    else if(l=="3"||l=="2"||l=="4") msg.channel.send("Usunięto "+l+" wydarzenia");
+    else msg.channel.send("Usunięto "+l+" wydarzeń");
 }
 
-function krtStary(gr) {
-    gr -=1;
-    for (i=0; databass.krt[gr][i].data < d;i++) {
-        databass.krt[gr].shift();
+exports.krtStary = function(gr,msg) {
+    gr -=1; var l = 0;
+    for (i=0; i < databass.krt[gr].length ;i++) {
+        if(databass.krt[gr][i].data < d) {
+            databass.krt[gr].splice(i,1);
+            l++;i--;
+        }
     }
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
+    });
+    l=l.toString()
+    if(l=="1") msg.channel.send("Usunięto "+l+" wydarzenie");
+    else if(l=="3"||l=="2"||l=="4") msg.channel.send("Usunięto "+l+" wydarzenia");
+    else msg.channel.send("Usunięto "+l+" wydarzeń");
 }
 
-function zadStary(gr) {
-    gr -=1;
-    for (i=0; databass.zad[gr][i].data < d;i++) {
-        databass.zad[gr].shift();
+exports.zadStary = function(gr,msg) {
+    gr -=1; var l = 0;
+    for (i=0; i < databass.zad[gr].length ;i++) {
+        if(databass.zad[gr][i].data < d) {
+            databass.zad[gr].splice(i,1);
+            l++;i--;
+        }
     }
+    fs.writeFile("./data.json", JSON.stringify(databass), (err) => {
+        if (err) console.error(err)
+    });
+    l=l.toString()
+    if(l=="1") msg.channel.send("Usunięto "+l+" wydarzenie");
+    else if(l=="3"||l=="2"||l=="4") msg.channel.send("Usunięto "+l+" wydarzenia");
+    else msg.channel.send("Usunięto "+l+" wydarzeń");
 }
 }
 
@@ -170,4 +200,3 @@ var d = D.getFullYear()*100000 + (D.getMonth()+1)*1000 + D.getDate()*10;
 
 //console.log(sprBlisko(1,3));
 }
-
