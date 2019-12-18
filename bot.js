@@ -30,7 +30,7 @@ fs.readdir("./commands/", (err, files) => {
   });
 });
 
-client.on('messageDelete', async (message) => {
+/*client.on('messageDelete', async (message) => {
   const logs = message.guild.channels.find(channel => channel.name === "logs");
   if (message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) {
     message.guild.createChannel('logs', 'logi');
@@ -58,7 +58,7 @@ let DeleteEmbed = new Discord.RichEmbed()
   .setFooter(`Message ID: ${message.id} | Author ID: ${message.author.id}`);
 
   logs.send(DeleteEmbed);
-})
+})*/
 
 client.login(config.Token);
 
