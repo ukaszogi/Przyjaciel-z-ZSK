@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
 	var zgadywane = [];
 	var haslo = "test";
 	var haslokryte = [];
-	var proby=5;
+	var proby=8;
 	juzgramy = new Boolean(false);
 	
 	if (args[0]=="start"){
