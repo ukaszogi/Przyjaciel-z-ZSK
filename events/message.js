@@ -1,4 +1,25 @@
 module.exports = (client, message) => {
+  function parseAsterisk(text) {
+        if (text.endsWith("*") && text.startsWith("*")) {
+            return parseAsterisk(text.substr(1, text.length - 2));
+        } else {
+            return text;
+        }
+    }
+
+    message.content = parseAsterisk(message.content);
+    
+    if (!isNaN(message.content) && message.author.id !== client.user.id && message.attachments.size == 0 && (message.channel.id === "689472410709524493" || message.channel.id === "651402884625465344"))  {
+        let num = parseInt(message.content)
+        if (num % 2 === 0) return;
+
+        let tosend = num + 1;
+
+        if (tosend % 1000 === 420) {
+            tosend = "**" + tosend + "**";
+        }
+        message.channel.send(tosend);
+    }
   if (message.author.bot) return;
   //if (message.content.indexOf(client.config.prefix) !== 0) return;
 
