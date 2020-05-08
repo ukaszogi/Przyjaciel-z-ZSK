@@ -11,7 +11,9 @@
     "node-nmap": "^4.0.0",
     "node-opus": "^0.3.3",
     "osmosis": "^1.1.10",
+    "querystring": "^0.2.0",
     "request": "^2.88.0",
+    "uuidv4": "^6.0.8",
     "winston": "^3.2.1",
     "ytdl-core": "^1.0.7"
   },
