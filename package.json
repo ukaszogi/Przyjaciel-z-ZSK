@@ -5,19 +5,26 @@
   "main": "bot.js",
   "author": "author",
   "dependencies": {
+    "@wulkanowy/uonet-request-signer": "^0.2.1",
+    "@wulkanowy/uonet-request-signer-node": "file:node_modules/@wulkanowy/uonet-request-signer",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "discord.js": "^11.5.1",
-    "enmap": "^5.2.3",
+    "discord.js": "^11.6.4",
+    "enmap": "^5.2.4",
+    "forge": "^2.3.0",
     "node-nmap": "^4.0.0",
     "node-opus": "^0.3.3",
     "osmosis": "^1.1.10",
     "querystring": "^0.2.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "uuidv4": "^6.0.8",
     "winston": "^3.2.1",
-    "ytdl-core": "^1.0.7"
+    "xmlhttprequest": "^1.8.0",
+    "ytdl-core": "^1.0.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "node-forge": "^0.9.1",
+    "node-webcrypto-ossl": "^2.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
