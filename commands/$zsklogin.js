@@ -1,6 +1,13 @@
 exports.run = (client, message, args) => {
 
-    if (args[2] === undefined) {
+    if (message.guild !== null) {
+        message.channel.startTyping()
+        message.delete()
+        message.channel.send(message.author.toString()+" Usunąłem twoją wiadomość dla bezpieczeństwa twojego konta. Aby się zalogować, napisz bezpośrednio **do mnie** prywatną wiadomość `$zsklogin [token] [symbol] [pin]`")
+        message.channel.stopTyping()
+        return
+    }
+    else if (args[2] === undefined) {
         message.channel.send("Zbyt mało argumentów!\nPoprawne użycie: `$zsklogin [token] [symbol] [pin]` ")
         return
     }
