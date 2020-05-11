@@ -108,6 +108,7 @@ exports.run = (client, message, args) => {
                     } catch (e) {
                         console.log(e.toString())
                         message.channel.send("Wystąpił błąd. Prawdopodobnie źle wpisałeś komendę")
+                        message.channel.stopTyping()
                     }
                 });
             });
@@ -115,6 +116,7 @@ exports.run = (client, message, args) => {
         } catch (e) {
             console.log(e.toString())
             message.channel.send("Wystąpił błąd. Prawdopodobnie źle wpisałeś komendę")
+            message.channel.stopTyping()
         }
     });
 }
