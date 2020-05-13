@@ -43,3 +43,9 @@ exports.getDataKoncowa = function (rokWybrany, miesiacWybrany, dzienWybrany, dzi
     if (dzienKon < 10) dzienKon = "0" + dzienKon
     return rokKon + "-" + miesiacKon + "-" + dzienKon
 }
+
+exports.getDataKoncowaMiesiac = function (rokWybrany, miesiacWybrany, dzienWybrany) {
+    miesiacKon =  -(-miesiacWybrany-1)
+    if (miesiacKon < 10) miesiacKon = "0" + miesiacKon
+    return rokWybrany + "-" + miesiacKon + "-" + dzienWybrany
+}
