@@ -3,12 +3,12 @@ exports.run = (client, message, args) => {
     if (message.guild !== null) {
         message.channel.startTyping()
         message.delete()
-        message.channel.send(message.author.toString()+" Usunąłem twoją wiadomość dla bezpieczeństwa twojego konta. Aby się zalogować, napisz bezpośrednio **do mnie** prywatną wiadomość `$zsklogin [token] [symbol] [pin]`")
+        message.channel.send(message.author.toString()+" Usunąłem twoją wiadomość dla bezpieczeństwa twojego konta. Aby się zalogować, napisz bezpośrednio **do mnie** prywatną wiadomość `$zsk login [token] [symbol] [pin]`")
         message.channel.stopTyping()
         return
     }
     else if (args[2] === undefined) {
-        message.channel.send("Zbyt mało argumentów!\nPoprawne użycie: `$zsklogin [token] [symbol] [pin]` ")
+        message.channel.send("Zbyt mało argumentów!\nPoprawne użycie: `$zsk login [token] [symbol] [pin]` ")
         return
     }
 
@@ -102,8 +102,11 @@ exports.run = (client, message, args) => {
                 }, function (err, res, body) {
                     try {
                         let dzejson = JSON.parse(body)
+                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
                         jdz.idUczen = dzejson.Data[0].Id
+                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
                         jdz.idOddzial = dzejson.Data[0].IdOddzial
+                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
                         jdz.idOkresKlasyfikacyjny = dzejson.Data[0].IdOkresKlasyfikacyjny
                         console.log(jdz.idOkresKlasyfikacyjny+"\n"+jdz.idOddzial+"\n"+jdz.idUczen+"\n"+jdz.certyfikatPfx+"\n"+jdz.certyfikatKlucz+"\n")
                         jdo.push(jdz)

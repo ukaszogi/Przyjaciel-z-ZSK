@@ -7,11 +7,11 @@ exports.run = (client, message, args) => {
         console.log(`Pozycjaw json: ${pozycja}`)
     })
     if (pozycja == null) {
-        message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `$zsklogin [token] [symbol] [pin]`")
+        message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `$zsk login [token] [symbol] [pin]`")
         return
     }
     if ((args[0] !== "dzisiaj" && args[0] !== "jutro") && (isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2]))) {
-        message.channel.send("Podano nieprawidłowe dane. Poprawne użycie: `$zskplan dzisiaj / jutro / [rok] [miesiąc] [dzień]`")
+        message.channel.send("Podano nieprawidłowe dane. Poprawne użycie: `$zsk plan dzisiaj / jutro / [rok] [miesiąc] [dzień]`")
         return
     }
 
