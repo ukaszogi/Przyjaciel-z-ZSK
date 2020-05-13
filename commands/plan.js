@@ -127,7 +127,7 @@ exports.run = (client, message, args) => {
                             if (cale[2].length > liPrzedmiot) liPrzedmiot = cale[2].length
                             if (cale[4].length > liNauczyciel) liNauczyciel = cale[4].length
                         })
-                        let calusienkie = `PLAN LEKCJI - ${dzienNazwa}\nnr${spacja(liNumer+1)}sala${spacja(liSala-1)}godziny${spacja(7)}przedmiot${spacja(liPrzedmiot-6)}nauczyciel\n`
+                        let calusienkie = `PLAN LEKCJI - ${dzienNazwa}\nnr${spacja(liNumer + 1)}sala${spacja(liSala - 1)}godziny${spacja(7)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
                         tabwynik.forEach(function (item) {
                             cale = item.split(",")
                             lekcja = cale[0]
@@ -148,8 +148,8 @@ exports.run = (client, message, args) => {
                                 parseInt(pel[1].split(":")[0]) >= hour &&
                                 parseInt(pel[1].split(":")[1]) >= minut && dz
                             ) {
-                                calusienkie += calusienkie += lekcja + ">" + spacja(3 + liNumer - lekcja.length-1) + gdzie + spacja(3+liSala-gdzie.length) + godzina + "   " + co + spacja(3+liPrzedmiot-co.length) + zKim + "\n"
-                            } else calusienkie += lekcja + spacja(3 + liNumer - lekcja.length) + gdzie + spacja(3+liSala-gdzie.length) + godzina + "   " + co + spacja(3+liPrzedmiot-co.length) + zKim + "\n"
+                                calusienkie += calusienkie += lekcja + ">" + spacja(3 + liNumer - lekcja.length - 1) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
+                            } else calusienkie += lekcja + spacja(3 + liNumer - lekcja.length) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
                         })
                         message.channel.send("```" + calusienkie + "```")
                     } else {

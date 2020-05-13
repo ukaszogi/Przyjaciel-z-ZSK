@@ -123,15 +123,15 @@ exports.run = (client, message, args) => {
                             console.log(jestSprawdzianem)
                             dataTekst = cale[0]
                             opis = cale[2]
-                            if (opis.length===0) opis = "(Brak opisu)"
+                            if (opis.length === 0) opis = "(Brak opisu)"
                             przedmioty.forEach(function (item) {
                                 if (item.Id == cale[3]) przedmiot = item.Nazwa
                             })
                             nauczyciele.forEach(function (item) {
                                 if (item.Id == cale[4]) nauczyciel = item.Imie + " " + item.Nazwisko
                             })
-                            if (jestSprawdzianem==="true") {
-                                calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel+"\n"
+                            if (jestSprawdzianem === "true") {
+                                calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                             }
                         })
                         calusienkie += `\nKARTKÓWKI\ndata${spacja(liData - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
@@ -140,15 +140,15 @@ exports.run = (client, message, args) => {
                             jestSprawdzianem = cale[1]
                             dataTekst = cale[0]
                             opis = cale[2]
-                            if (opis.length===0) opis = "(Brak opisu)"
+                            if (opis.length === 0) opis = "(Brak opisu)"
                             przedmioty.forEach(function (item) {
                                 if (item.Id == cale[3]) przedmiot = item.Nazwa
                             })
                             nauczyciele.forEach(function (item) {
                                 if (item.Id == cale[4]) nauczyciel = item.Imie + " " + item.Nazwisko
                             })
-                            if (jestSprawdzianem==="false") {
-                                calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel+"\n"
+                            if (jestSprawdzianem === "false") {
+                                calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                             }
                         })
                         console.log(calusienkie)

@@ -3,11 +3,10 @@ exports.run = (client, message, args) => {
     if (message.guild !== null) {
         message.channel.startTyping()
         message.delete()
-        message.channel.send(message.author.toString()+" Usunąłem twoją wiadomość dla bezpieczeństwa twojego konta. Aby się zalogować, napisz bezpośrednio **do mnie** prywatną wiadomość `$zsk login [token] [symbol] [pin]`")
+        message.channel.send(message.author.toString() + " Usunąłem twoją wiadomość dla bezpieczeństwa twojego konta. Aby się zalogować, napisz bezpośrednio **do mnie** prywatną wiadomość `$zsk login [token] [symbol] [pin]`")
         message.channel.stopTyping()
         return
-    }
-    else if (args[2] === undefined) {
+    } else if (args[2] === undefined) {
         message.channel.send("Zbyt mało argumentów!\nPoprawne użycie: `$zsk login [token] [symbol] [pin]` ")
         return
     }
@@ -20,7 +19,7 @@ exports.run = (client, message, args) => {
     let isInDatabass = false
 
     jdo.forEach(function (item) {
-        if (item.dcId==message.author.id) isInDatabass = true
+        if (item.dcId == message.author.id) isInDatabass = true
     })
 
     if (isInDatabass) {
@@ -32,8 +31,8 @@ exports.run = (client, message, args) => {
     const symbol = args[1]
     const pin = args[2]
     const host = "https://lekcjaplus.vulcan.net.pl/"
-    const urlCertyfikat = host+symbol+"/mobile-api/Uczen.v3.UczenStart/Certyfikat"
-    const urlListaUczniow = host+symbol+"/mobile-api/Uczen.v3.UczenStart/ListaUczniow"
+    const urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat"
+    const urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow"
     const password = require("../auth.json").password
     const timekey = Math.floor(Date.now() / 1000)
     const timekey1 = timekey - 1
@@ -108,7 +107,7 @@ exports.run = (client, message, args) => {
                         jdz.idOddzial = dzejson.Data[0].IdOddzial
                         // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
                         jdz.idOkresKlasyfikacyjny = dzejson.Data[0].IdOkresKlasyfikacyjny
-                        console.log(jdz.idOkresKlasyfikacyjny+"\n"+jdz.idOddzial+"\n"+jdz.idUczen+"\n"+jdz.certyfikatPfx+"\n"+jdz.certyfikatKlucz+"\n")
+                        console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n")
                         jdo.push(jdz)
                         fs.writeFile("./wrazliweDane.json", JSON.stringify(jdo), (err) => {
                             if (err) console.error(err)
