@@ -18,13 +18,13 @@ exports.run = (client, message, args) => {
     const uuidv4 = require('uuidv4'),
         signer = require("@wulkanowy/uonet-request-signer"),
         request = require("request"),
-        Discord = require('discord.js'),
         uonet = require("../uonet.js"),
 
         certificateKey1 = jdo[pozycja].certyfikatKlucz,
         password1 = require("../auth.json").password,
         certificate1 = jdo[pozycja].certyfikatPfx,
         urlPlan = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/PlanLekcjiZeZmianami',
+        urlSlowniki = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Slowniki',
         timekey = Math.floor(Date.now() / 1000),
         timekey1 = timekey - 1,
         idOddzial = jdo[pozycja].idOddzial,
@@ -32,6 +32,7 @@ exports.run = (client, message, args) => {
         idUczen = jdo[pozycja].idUczen,
 
         d = new Date(),
+        dz = args[0] === "dzisiaj",
         rokWybrany = args[0] === "dzisiaj" || args[0] === "jutro" ? d.getFullYear() : args[0],
         miesiacWybrany = args[0] === "dzisiaj" || args[0] === "jutro" ? d.getMonth() + 1 : args[1],
         dzienWybrany = args[0] === "dzisiaj" ? d.getDate() : args[0] === "jutro" ? d.getDate() + 1 : args[2],
@@ -63,7 +64,15 @@ exports.run = (client, message, args) => {
         "RemoteMobileAppVersion": "19.4.1.436",
         "RemoteMobileAppName": "VULCAN-Android-ModulUcznia"
     }
+    let formSlowniki = {
+        "RemoteMobileTimeKey": timekey,
+        "TimeKey": timekey1,
+        "RequestId": uuidv4.uuid(),
+        "RemoteMobileAppVersion": "19.4.1.436",
+        "RemoteMobileAppName": "VULCAN-Android-ModulUcznia"
+    }
     let formData = JSON.stringify(formPlan)
+    let formData2 = JSON.stringify(formSlowniki)
 
     signer.signContent(password1, certificate1, formData).then(signed => {
         message.channel.startTyping()
@@ -81,33 +90,66 @@ exports.run = (client, message, args) => {
             const json = JSON.parse(body);
             console.log("Status: " + json.Status);
             const lekcje = json.Data
+            let nauczyciele, pory
             const tabwynik = []
-            let lekcja = "", co = "", gdzie = ""
+            let lekcja = "", co = "", gdzie = "", zKim = "", godzina = ""
 
             lekcje.forEach(function (item) {
                     if (item.DzienTekst === dataWybrana && item.PlanUcznia === true) {
-                        tabwynik.push(item.NumerLekcji + "," + item.Sala + "," + item.PrzedmiotNazwa)
+                        tabwynik.push(item.NumerLekcji + "," + item.Sala + "," + item.PrzedmiotNazwa + "," + item.IdPoraLekcji + "," + item.IdPracownik)
                     }
                 }
             )
-            if (tabwynik.length > 0) {
-                tabwynik.sort()
-                tabwynik.forEach(function (item) {
-                    cale = item.split(",")
-                    lekcja += cale[0] + "\n"
-                    gdzie += cale[1] + "\n"
-                    co += cale[2] + "\n"
-                })
-                let Embed = new Discord.RichEmbed()
-                    .setTitle(`**PLAN LEKCJI - ${dzienNazwa}**`)
-                    .setColor("#58ff1d")
-                    .addField("Nr", lekcja, true)
-                    .addField("Sala", gdzie, true)
-                    .addField("Przedmiot", co, true)
-                message.channel.send(Embed);
-            } else {
-                message.channel.send("Nie znalazłem żadnej lekcjitego dnia.")
-            }
+
+            signer.signContent(password1, certificate1, formData2).then(signed2 => {
+                request({
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'RequestCertificateKey': certificateKey1,
+                        'RequestSignatureValue': signed2,
+                        'User-Agent': 'MobileUserAgent'
+                    },
+                    url: urlSlowniki,
+                    body: formData2,
+                    method: 'POST'
+                }, function (err, res, body) {
+                    let data = JSON.parse(body).Data
+                    nauczyciele = data.Nauczyciele
+                    pory = data.PoryLekcji
+
+                    if (tabwynik.length > 0) {
+                        tabwynik.sort()
+                        let calusienkie = `PLAN LEKCJI - ${dzienNazwa}\nnr   sala     godziny       przedmiot - nauczyciel\n`
+                        tabwynik.forEach(function (item) {
+                            cale = item.split(",")
+                            lekcja = cale[0]
+                            gdzie = cale[1]
+                            co = cale[2]
+                            pory.forEach(function (item) {
+                                if (item.Id == cale[3]) godzina = item.PoczatekTekst + "-" + item.KoniecTekst
+                            })
+                            nauczyciele.forEach(function (item) {
+                                if (item.Id == cale[4]) zKim = item.Imie + " " + item.Nazwisko
+                            })
+                            pel = godzina.split("-")
+                            hour = new Date().getHours()
+                            minut = new Date().getMinutes()
+                            if (
+                                parseInt(pel[0].split(":")[0]) <= hour &&
+                                parseInt(pel[0].split(":")[1]) <= minut &&
+                                parseInt(pel[1].split(":")[0]) >= hour &&
+                                parseInt(pel[1].split(":")[1]) >= minut && dz
+                            ) {
+                                calusienkie += ` ${lekcja}>   ${gdzie}    ${godzina}     ${co}  - ${zKim}\n`
+                            } else calusienkie += ` ${lekcja}    ${gdzie}    ${godzina}     ${co} - ${zKim}\n`
+                        })
+                        message.channel.send("```" + calusienkie + "```")
+                    } else {
+                        message.channel.send("Nie znalazłem żadnej lekcji tego dnia.")
+                    }
+                });
+            });
+
             message.channel.stopTyping()
         });
     });
