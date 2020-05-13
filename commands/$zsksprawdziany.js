@@ -20,7 +20,6 @@ exports.run = (client, message, args) => {
         password1 = require("../auth.json").password,
         certificate1 = jdo[pozycja].certyfikatPfx,
         urlSprawdziany = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Sprawdziany',
-        urlZadania = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/ZadaniaDomowe',
         urlSlowniki = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Slowniki',
         timekey = Math.floor(Date.now() / 1000),
         timekey1 = timekey - 1,
@@ -40,7 +39,7 @@ exports.run = (client, message, args) => {
     console.log(`Data początkowa: ${dataPoczatkowa}`)
     console.log(`Data koncowa: ${dataKoncowa}`)
 
-    let formSprawdzianyAleTezZadania = {
+    let formSprawdziany = {
         "DataPoczatkowa": dataPoczatkowa,
         "DataKoncowa": dataKoncowa,
         "IdOddzial": idOddzial,
@@ -59,7 +58,7 @@ exports.run = (client, message, args) => {
         "RemoteMobileAppVersion": "19.4.1.436",
         "RemoteMobileAppName": "VULCAN-Android-ModulUcznia"
     }
-    let formData = JSON.stringify(formSprawdzianyAleTezZadania)
+    let formData = JSON.stringify(formSprawdziany)
     let formData2 = JSON.stringify(formSlowniki)
 
     signer.signContent(password1, certificate1, formData).then(signed => {
@@ -159,9 +158,8 @@ exports.run = (client, message, args) => {
                     }
                 });
             });
-
-            message.channel.stopTyping()
         });
+        message.channel.stopTyping()
     });
 
     function spacja(ile) {
