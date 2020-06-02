@@ -1,9 +1,9 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message/*, args*/) => {
 
     const jdo = require("../wrazliweDane.json")
     let pozycja = null
     jdo.forEach(function (item, position) {
-        if (item.dcId == message.author.id) pozycja = position
+        if (item.dcId.toString() === message.author.id) pozycja = position
         console.log(`Pozycjaw json: ${pozycja}`)
     })
     if (pozycja == null) {
@@ -82,7 +82,7 @@ exports.run = (client, message, args) => {
             let jestSprawdzianem, opis, dataTekst, przedmiot, nauczyciel
 
             sprKartJson.forEach(function (item) {
-                    sprawdzianyIKartkowki.push(item.DataTekst + "," + item.Rodzaj + "," + item.Opis + "," + item.IdPrzedmiot + "," + item.IdPracownik)
+                    sprawdzianyIKartkowki.push(item["DataTekst"] + ",,," + item["Rodzaj"] + ",,," + item["Opis"] + ",,," + item["IdPrzedmiot"] + ",,," + item["IdPracownik"])
                 }
             )
 
@@ -99,36 +99,35 @@ exports.run = (client, message, args) => {
                     method: 'POST'
                 }, function (err, res, body) {
                     let data = JSON.parse(body).Data
-                    nauczyciele = data.Nauczyciele
-                    przedmioty = data.Przedmioty
+                    nauczyciele = data["Nauczyciele"]
+                    przedmioty = data["Przedmioty"]
 
                     if (sprawdzianyIKartkowki.length > 0) {
                         sprawdzianyIKartkowki.sort()
                         let liData = 0, liOpis = 0, liPrzedmiot = 0
                         sprawdzianyIKartkowki.forEach(function (item) {
-                            let cale = item.split(",")
+                            let cale = item.split(",,,")
                             if (cale[0].length > liData) liData = cale[0].length
                             if (cale[2].length > liOpis) liOpis = cale[2].length
                             przedmioty.forEach(function (item) {
-                                if (item.Id == cale[3]) {
-                                    let nazwa = item.Nazwa
+                                if (item["Id"].toString() === cale[3]) {
+                                    let nazwa = item["Nazwa"]
                                     if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
                                 }
                             })
                         })
                         let calusienkie = `\nSPRAWDZIANY\ndata${spacja(liData - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
                         sprawdzianyIKartkowki.forEach(function (item) {
-                            let cale = item.split(",")
+                            let cale = item.split(",,,")
                             jestSprawdzianem = cale[1]
-                            console.log(jestSprawdzianem)
                             dataTekst = cale[0]
                             opis = cale[2]
                             if (opis.length === 0) opis = "(Brak opisu)"
                             przedmioty.forEach(function (item) {
-                                if (item.Id == cale[3]) przedmiot = item.Nazwa
+                                if (item["Id"].toString() === cale[3]) przedmiot = item["Nazwa"]
                             })
                             nauczyciele.forEach(function (item) {
-                                if (item.Id == cale[4]) nauczyciel = item.Imie + " " + item.Nazwisko
+                                if (item["Id"].toString() === cale[4]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
                             })
                             if (jestSprawdzianem === "true") {
                                 calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
@@ -136,25 +135,27 @@ exports.run = (client, message, args) => {
                         })
                         calusienkie += `\nKARTKÓWKI\ndata${spacja(liData - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
                         sprawdzianyIKartkowki.forEach(function (item) {
-                            let cale = item.split(",")
+                            let cale = item.split(",,,")
+                            console.log(cale)
                             jestSprawdzianem = cale[1]
                             dataTekst = cale[0]
                             opis = cale[2]
                             if (opis.length === 0) opis = "(Brak opisu)"
                             przedmioty.forEach(function (item) {
-                                if (item.Id == cale[3]) przedmiot = item.Nazwa
+                                if (item["Id"].toString() === cale[3]) przedmiot = item["Nazwa"]
                             })
                             nauczyciele.forEach(function (item) {
-                                if (item.Id == cale[4]) nauczyciel = item.Imie + " " + item.Nazwisko
+                                if (item["Id"].toString() === cale[4]) {
+                                    nauczyciel = item["Imie"] + " " + item["Nazwisko"]
+                                }
                             })
                             if (jestSprawdzianem === "false") {
                                 calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                             }
                         })
-                        console.log(calusienkie)
                         message.channel.send("```" + calusienkie + "```")
                     } else {
-                        message.channel.send("Nie znalazłem żadnej lekcji tego dnia.")
+                        message.channel.send("Nie znalazłem żadnych sprawdzianów na następny miesiąc.")
                     }
                 });
             });
@@ -163,10 +164,10 @@ exports.run = (client, message, args) => {
     });
 
     function spacja(ile) {
-        let spac = ""
-        for (i = 1; i <= ile; i++) {
-            spac += " "
+        let spacyjka = ""
+        for (let i = 1; i <= ile; i++) {
+            spacyjka += " "
         }
-        return spac
+        return spacyjka
     }
 }

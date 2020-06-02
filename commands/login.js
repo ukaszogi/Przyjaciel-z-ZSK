@@ -1,4 +1,7 @@
 exports.run = (client, message, args) => {
+    //TODO: Naprawić logowanie i usunąć 3 linijki poniżej wraz z tym komentarzem
+    message.channel.send("Na razie logowanie nie działa. Pracujemy nad rozwiązaniem tego problemu. Prosimy o cierpliwość");
+    return;
 
     if (message.guild !== null) {
         message.channel.startTyping()
@@ -19,7 +22,7 @@ exports.run = (client, message, args) => {
     let isInDatabass = false
 
     jdo.forEach(function (item) {
-        if (item.dcId == message.author.id) isInDatabass = true
+        if (item["dcId"] === message.author.id) isInDatabass = true
     })
 
     if (isInDatabass) {
@@ -37,7 +40,7 @@ exports.run = (client, message, args) => {
     const timekey = Math.floor(Date.now() / 1000)
     const timekey1 = timekey - 1
 
-    var jdz = {
+    let jdz = {
         dcId: message.author.id,
         idOddzial: 0,
         idOkresKlasyfikacyjny: 0,
@@ -82,9 +85,10 @@ exports.run = (client, message, args) => {
     }, function (err, res, body) {
         message.channel.startTyping()
         try {
+            console.log(body)
             let json = JSON.parse(body)
-            jdz.certyfikatKlucz = json.TokenCert.CertyfikatKlucz
-            jdz.certyfikatPfx = json.TokenCert.CertyfikatPfx
+            jdz.certyfikatKlucz = json["TokenCert"]["CertyfikatKlucz"]
+            jdz.certyfikatPfx = json["TokenCert"]["CertyfikatPfx"]
 
             signer.signContent(password, jdz.certyfikatPfx, JSON.stringify(formListaUczniow)).then(signed => {
                 console.log("\n\nsigned\n" + signed + "\n\n\n");
@@ -101,12 +105,9 @@ exports.run = (client, message, args) => {
                 }, function (err, res, body) {
                     try {
                         let dzejson = JSON.parse(body)
-                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
-                        jdz.idUczen = dzejson.Data[0].Id
-                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
-                        jdz.idOddzial = dzejson.Data[0].IdOddzial
-                        // noinspection JSPotentiallyInvalidTargetOfIndexedPropertyAccess
-                        jdz.idOkresKlasyfikacyjny = dzejson.Data[0].IdOkresKlasyfikacyjny
+                        jdz.idUczen = dzejson["Data"][0]["Id"]
+                        jdz.idOddzial = dzejson["Data"][0]["IdOddzial"]
+                        jdz.idOkresKlasyfikacyjny = dzejson["Data"][0]["IdOkresKlasyfikacyjny"]
                         console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n")
                         jdo.push(jdz)
                         fs.writeFile("./wrazliweDane.json", JSON.stringify(jdo), (err) => {
