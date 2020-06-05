@@ -1,8 +1,4 @@
 exports.run = (client, message, args) => {
-    //TODO: Naprawić logowanie i usunąć 3 linijki poniżej wraz z tym komentarzem
-    message.channel.send("Na razie logowanie nie działa. Pracujemy nad rozwiązaniem tego problemu. Prosimy o cierpliwość");
-    return;
-
     if (message.guild !== null) {
         message.channel.startTyping()
         message.delete()
@@ -30,15 +26,16 @@ exports.run = (client, message, args) => {
         return
     }
 
-    const token = args[0]
-    const symbol = args[1]
-    const pin = args[2]
-    const host = "https://lekcjaplus.vulcan.net.pl/"
-    const urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat"
-    const urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow"
-    const password = require("../auth.json").password
-    const timekey = Math.floor(Date.now() / 1000)
-    const timekey1 = timekey - 1
+    const token = args[0],
+        symbol = args[1],
+        pin = args[2],
+        host = "https://lekcjaplus.vulcan.net.pl/",
+        firebaseTokenKey = require("../auth.json").FirebaseTokenKey,
+        urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat",
+        urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow",
+        password = require("../auth.json").password,
+        timekey = Math.floor(Date.now() / 1000),
+        timekey1 = timekey - 1
 
     let jdz = {
         dcId: message.author.id,
@@ -60,6 +57,7 @@ exports.run = (client, message, args) => {
         "DeviceSystemType": "Android",
         "DeviceSystemVersion": "6.0.1",
         "RemoteMobileTimeKey": timekey,
+        "FirebaseTokenKey": firebaseTokenKey,
         "TimeKey": timekey1,
         "RequestId": uuidv4.uuid(),
         "RemoteMobileAppVersion": "19.4.1.436",
