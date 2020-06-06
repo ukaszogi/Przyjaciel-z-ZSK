@@ -25,35 +25,18 @@ exports.run = (client, message, args) => {
     const uuidv4 = require('uuidv4'),
         signer = require("@wulkanowy/uonet-request-signer"),
         request = require("request"),
-        uonet = require("../uonet.js"),
 
         certificateKey1 = jdo[pozycja].certyfikatKlucz,
         password1 = require("../auth.json").password,
         certificate1 = jdo[pozycja].certyfikatPfx,
-        urlSprawdziany = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Oceny',
+        urlOceny = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Oceny',
         urlSlowniki = 'https://lekcjaplus.vulcan.net.pl/poznan/000088/mobile-api/Uczen.v3.Uczen/Slowniki',
         timekey = Math.floor(Date.now() / 1000),
         timekey1 = timekey - 1,
-        idOddzial = jdo[pozycja].idOddzial,
         idOkresKlasyfikacyjny = jdo[pozycja].idOkresKlasyfikacyjny,
-        idUczen = jdo[pozycja].idUczen,
-
-        d = new Date(),
-        rokWybrany = d.getFullYear(),
-        miesiacWybrany = d.getMonth() + 1,
-        dzienWybrany = d.getDate(),
-        dzienTygWybrany = d.getDay(),
-
-        dataPoczatkowa = uonet.getDataPoczatkowa(rokWybrany, miesiacWybrany, dzienWybrany, dzienTygWybrany),
-        dataKoncowa = uonet.getDataKoncowaMiesiac(rokWybrany, miesiacWybrany, dzienWybrany)
-
-    console.log(`Data początkowa: ${dataPoczatkowa}`)
-    console.log(`Data koncowa: ${dataKoncowa}`)
+        idUczen = jdo[pozycja].idUczen
 
     let formOceny = {
-        "DataPoczatkowa": dataPoczatkowa,
-        "DataKoncowa": dataKoncowa,
-        "IdOddzial": idOddzial,
         "IdOkresKlasyfikacyjny": idOkresKlasyfikacyjny,
         "IdUczen": idUczen,
         "RemoteMobileTimeKey": timekey,
@@ -81,19 +64,19 @@ exports.run = (client, message, args) => {
                 'RequestSignatureValue': signed,
                 'User-Agent': 'MobileUserAgent'
             },
-            url: urlSprawdziany,
+            url: urlOceny,
             body: formData,
             method: 'POST'
         }, function (err, res, body) {
             const json = JSON.parse(body);
             console.log("Status: " + json.Status);
-            const zadaniaJson = json.Data
+            const ocenyJson = json.Data
             let nauczyciele, przedmioty
-            const zadaniaLista = []
+            const ocenyLista = []
             let opis, ocena, waga, dataTekst, przedmiot, nauczyciel
 
-            zadaniaJson.forEach(function (item) {
-                    zadaniaLista.push(item["DataUtworzeniaTekst"] + ",,," + item["Wpis"] + ",,," + item["Waga"] + ",,," + item["Opis"] + ",,," + item["IdPrzedmiot"] + ",,," + item["IdPracownikD"])
+            ocenyJson.forEach(function (item) {
+                    ocenyLista.push(item["DataUtworzeniaTekst"] + ",,," + item["Wpis"] + ",,," + item["Waga"] + ",,," + item["Opis"] + ",,," + item["IdPrzedmiot"] + ",,," + item["IdPracownikD"])
                 }
             )
 
@@ -113,18 +96,16 @@ exports.run = (client, message, args) => {
                     nauczyciele = data["Nauczyciele"]
                     przedmioty = data["Przedmioty"]
 
-                    if (zadaniaLista.length > 0) {
-                        zadaniaLista.sort()
-                        zadaniaLista.reverse()
+                    if (ocenyLista.length > 0) {
+                        ocenyLista.sort()
+                        ocenyLista.reverse()
                         let liData = 0, liOcena = 0, liWaga = 0, liOpis = 0, liPrzedmiot = 0
-                        zadaniaLista.forEach(function (item) {
+                        ocenyLista.forEach(function (item) {
                             let cale = item.split(",,,")
-                            let bl = false
                             przedmioty.forEach(function (item) {
                                 if (item["Id"].toString() === cale[4] && (item["Nazwa"].toString().toLowerCase() === przedmiotWybrany || przedmiotWybrany === "wszystkie")) {
                                     let nazwa = item["Nazwa"]
                                     if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
-                                    //TODO: Naprawić bardzo nieoptymalne rozwiązanie
                                     if (cale[0].length > liData) liData = cale[0].length
                                     if (cale[1].length > liOcena) liOcena = cale[1].length
                                     if (cale[2].length > liWaga) liWaga = cale[2].length
@@ -133,7 +114,7 @@ exports.run = (client, message, args) => {
                             })
                         })
                         let calusienkie = `\nOCENY\ndata${spacja(liData - 1)}wpis${spacja(liOcena - 1)}waga${spacja(liWaga - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
-                        zadaniaLista.forEach(function (item) {
+                        ocenyLista.forEach(function (item) {
                             let cale = item.split(",,,")
                             dataTekst = cale[0]
                             ocena = cale[1]
@@ -147,15 +128,14 @@ exports.run = (client, message, args) => {
                                 if (item["Id"].toString() === cale[5]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
                             })
                             if (przedmiotWybrany === "wszystkie" || przedmiot.toString().toLowerCase() === przedmiotWybrany) {
-                                let calTest = calusienkie
-                                calTest += dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                let calTest = calusienkie + dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                                 if (calTest.length<2000)
                                     calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                             }
                         })
                         message.channel.send("```" + calusienkie + "```")
                     } else {
-                        message.channel.send("Nie znalazłem żadnych zadań domowych na następny miesiąc.")
+                        message.channel.send("Nie znalazłem żadnych ocen")
                     }
                 });
             });
