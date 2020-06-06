@@ -4,7 +4,7 @@ module.exports = (client) => {
     client.user.setPresence({
         status: "online",
         game: {
-            name: "z przyjacółmi z ZSK",
+            name: "z przyjaciółmi z ZSK",
             type: "PLAYING" //PLAYING or WATCHING or LISTENING or STREAMING
         }
     });
