@@ -47,7 +47,7 @@ exports.getDataKoncowa = function (rokWybrany, miesiacWybrany, dzienWybrany, dzi
 exports.getDataKoncowaMiesiac = function (rokWybrany, miesiacWybrany, dzienWybrany) {
     //TODO: ulepszyć to bo mine oczy bolą jak na to patrzę
     console.log("kon na miesiac")
-    miesiacKon =  -(-miesiacWybrany-1)
+    miesiacKon = -(-miesiacWybrany - 1)
     if (miesiacKon < 10) miesiacKon = "0" + miesiacKon
     if (dzienWybrany < 10) dzienWybrany = "0" + dzienWybrany
     return rokWybrany + "-" + miesiacKon + "-" + dzienWybrany
