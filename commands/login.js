@@ -2,6 +2,7 @@ module.exports = {
     name: "login",
     description: "",
     aliases: ['login'],
+    usage: 'login [token] [symbol] [pin]',
     execute(client, message, args) {
         if (message.guild !== null) {
             message.channel.startTyping()

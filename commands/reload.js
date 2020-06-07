@@ -2,6 +2,7 @@ module.exports = {
     name: "reload",
     description: "",
     aliases: ['przeładuj', 'rld'],
+    usage: 'reload [komenda]',
     execute(client, message, args) {
         let auth = require("../auth.json")
         if (!(message.author.id === auth.ownerIDMat || message.author.id === auth.ownerIDLuk)) {

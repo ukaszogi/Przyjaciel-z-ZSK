@@ -2,6 +2,7 @@ module.exports = {
     name: "plan",
     description: "",
     aliases: ['p'],
+    usage: 'plan dzisiaj | jutro | [rok] [miesiąc] [dzień]',
     execute(client, message, args) {
 
         const jdo = require("../wrazliweDane.json")

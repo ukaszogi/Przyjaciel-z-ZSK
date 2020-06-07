@@ -2,6 +2,7 @@ module.exports = {
     name: "los",
     description: "",
     aliases: ['los'],
+    usage: 'los [liczba]',
     execute(client, message, args) {
         if (args[0] != null && Number.isInteger(Math.floor(Math.random() * args[0])))
             message.channel.send(Math.floor(Math.random() * args[0]));

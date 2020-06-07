@@ -2,6 +2,7 @@ module.exports = {
     name: "zsk",
     description: "",
     aliases: ['zsk'],
+    usage: '$zsk spr (up) [grupa] [nie pamiętam xD]',
     execute(client, message, args) {
         const funk = require("./../funk.js");
 

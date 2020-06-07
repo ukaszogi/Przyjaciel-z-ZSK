@@ -2,6 +2,7 @@ module.exports = {
     name: "sprawdziany",
     description: "",
     aliases: ['s', 'spr', 'kart', 'kartkówki', 'kartkowki', 'k'],
+    usage: 'sprawdziany',
     execute(client, message) {
 
         const jdo = require("../wrazliweDane.json")

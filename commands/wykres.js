@@ -2,6 +2,7 @@ module.exports = {
     name: "wykres",
     description: "",
     "aliases": ['w', 'wyk', 'wykres'],
+    usage: 'wykres wszystkie | [pełna nazwa przedmiotu]',
     execute(client, message, args) {
 
         const jdo = require("../wrazliweDane.json")

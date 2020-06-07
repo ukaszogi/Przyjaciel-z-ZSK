@@ -2,6 +2,7 @@ module.exports = {
     name: "wisielec",
     description: "",
     aliases: ['wis'],
+    usage: 'wisielec start [hasło]\npo rozoczęciu gry: wi [literka]',
     execute(client, message, args) {
         const wisielson = require("./../wisiel.json")
         let zgadywane = [];
