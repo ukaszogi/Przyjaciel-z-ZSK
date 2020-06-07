@@ -2,10 +2,11 @@ module.exports = {
     name: "help",
     description: "Shows this message",
     aliases: ['pomoc', '?', 'commands'],
+    usage: 'help [command]',
     execute(client, message, args) {
-        const Discord = require('discord.js');
         const fs = require('fs')
         let listaKomend = ""
+        let komenda
         fs.readdir("./commands", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
@@ -13,11 +14,13 @@ module.exports = {
                 let commandName = file.split(".")[0];
                 let command = client.commands.get(commandName)
                     || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-                if (args.length<1) {
-                    listaKomend += command.name + ", "
+                listaKomend += command.name + ", "
+                if (command.name === args[0]) {
+                    komenda = command
                 }
             });
-            const exampleEmbed = {
+
+            const exampleEmbed = (args.length<1) ? {
                 color: 0x28166f,
                 title: 'Pomoc',
                 author: {
@@ -32,7 +35,7 @@ module.exports = {
                     },
                     {
                         name: 'Lista dostępnych komend',
-                        value: listaKomend.slice(0,-2) + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
+                        value: listaKomend.slice(0, -2) + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
                         inline: false,
                     },
                     {
@@ -51,7 +54,29 @@ module.exports = {
                     text: 'Przyjaciel z ZSK',
                     icon_url: 'https://www.zsk.poznan.pl/wp-content/uploads/2019/05/cropped-m_logo-192x192.png',
                 },
-            };
+            } : {
+                color: 0x28166f,
+                title: komenda.name,
+                author: {
+                    name: 'Przyjaciel z ZSK',
+                    icon_url: 'https://www.zsk.poznan.pl/wp-content/uploads/2019/05/cropped-m_logo-192x192.png',
+                },
+                description: 'Jak używać tej komendy?',
+                fields: [
+                    {
+                        name: 'Użycie',
+                        value: komenda.usage,
+                    },
+                    {
+                        name: 'Co robi ta komenda?',
+                        value: komenda.description || "(brak opisu)"
+                    },
+                    {
+                        name: 'Aliasy',
+                        value: komenda.aliases.toString()
+                    }
+                ],
+            }
             message.channel.send({embed: exampleEmbed});
         });
     }
