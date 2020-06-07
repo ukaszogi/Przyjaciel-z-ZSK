@@ -15,7 +15,8 @@ module.exports = {
             message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `$zsk login [token] [symbol] [pin]`")
             return
         }
-        if ((args[0] !== "dzisiaj" && args[0] !== "jutro") && (isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2]))) {
+        if (args.length<1) args.push("dzisiaj")
+        else if ((args[0] !== "dzisiaj" && args[0] !== "jutro") && (isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2]))) {
             message.channel.send("Podano nieprawidłowe dane. Poprawne użycie: `$zsk plan dzisiaj / jutro / [rok] [miesiąc] [dzień]`")
             return
         }
