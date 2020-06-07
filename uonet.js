@@ -7,7 +7,7 @@ exports.getDataPoczatkowa = function (rokWybrany, miesiacWybrany, dzienWybrany, 
         dzienPocz = new Date(rokWybrany, miesiacWybrany - 1, 0).getDate() + (dzienWybrany - (dzienTygWybrany - 1))
         console.log("\n1 if pocz")
     } else if (dzienWybrany - (dzienTygWybrany - 1) < 0 && miesiacWybrany - 1 <= 0) {
-        rokPocz = rokWybrany - 1
+        rokPocz = parseInt(rokWybrany) - 1
         miesiacPocz = 12
         dzienPocz = 31 + (dzienWybrany - (dzienTygWybrany - 1))
         console.log("\n2 if pocz")
@@ -23,13 +23,17 @@ exports.getDataPoczatkowa = function (rokWybrany, miesiacWybrany, dzienWybrany, 
 }
 
 exports.getDataKoncowa = function (rokWybrany, miesiacWybrany, dzienWybrany, dzienTygWybrany) {
+    if (miesiacWybrany === "13") {
+        miesiacWybrany = "1"
+        rokWybrany = (parseInt(rokWybrany) + 1).toString()
+    }
     if (parseInt(dzienWybrany) + (7 - dzienTygWybrany) > new Date(rokWybrany, miesiacWybrany, 0).getDate() && miesiacWybrany < 12) {
         rokKon = rokWybrany
         miesiacKon = 1 + parseInt(miesiacWybrany)
         dzienKon = (7 - dzienTygWybrany) - (new Date(rokWybrany, miesiacWybrany, 0).getDate() - dzienWybrany)
         console.log(`1 if kon`)
     } else if (dzienWybrany + (7 - dzienTygWybrany) > new Date(rokWybrany, miesiacWybrany, 0).getDate() && miesiacWybrany >= 12) {
-        rokKon = rokWybrany + 1
+        rokKon = parseInt(rokWybrany) + 1
         miesiacKon = 1
         dzienKon = (7 - dzienTygWybrany) - (new Date(rokWybrany, miesiacWybrany, 0).getDate() - dzienWybrany)
         console.log("2 if kon")
@@ -42,13 +46,4 @@ exports.getDataKoncowa = function (rokWybrany, miesiacWybrany, dzienWybrany, dzi
     if (miesiacKon < 10) miesiacKon = "0" + miesiacKon
     if (dzienKon < 10) dzienKon = "0" + dzienKon
     return rokKon + "-" + miesiacKon + "-" + dzienKon
-}
-
-exports.getDataKoncowaMiesiac = function (rokWybrany, miesiacWybrany, dzienWybrany) {
-    //TODO: ulepszyć to bo mine oczy bolą jak na to patrzę
-    console.log("kon na miesiac")
-    miesiacKon = -(-miesiacWybrany - 1)
-    if (miesiacKon < 10) miesiacKon = "0" + miesiacKon
-    if (dzienWybrany < 10) dzienWybrany = "0" + dzienWybrany
-    return rokWybrany + "-" + miesiacKon + "-" + dzienWybrany
 }

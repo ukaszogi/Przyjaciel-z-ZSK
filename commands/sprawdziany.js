@@ -39,7 +39,7 @@ module.exports = {
             dzienTygWybrany = d.getDay(),
 
             dataPoczatkowa = uonet.getDataPoczatkowa(rokWybrany, miesiacWybrany, dzienWybrany, dzienTygWybrany),
-            dataKoncowa = uonet.getDataKoncowaMiesiac(rokWybrany, miesiacWybrany, dzienWybrany)
+            dataKoncowa = uonet.getDataKoncowa(rokWybrany, miesiacWybrany+1, dzienWybrany, dzienTygWybrany)
 
         console.log(`Data początkowa: ${dataPoczatkowa}`)
         console.log(`Data koncowa: ${dataKoncowa}`)

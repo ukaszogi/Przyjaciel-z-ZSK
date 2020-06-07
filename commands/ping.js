@@ -4,6 +4,9 @@ module.exports = {
     aliases: ['pong'],
     usage: 'ping',
     execute(client, message) {
-        message.reply('Pong!');
+        const args = message.content.slice(client.config.prefix.length).split(/ +/);
+        const commandName = args.shift().toLowerCase();
+        if (commandName === 'pong') message.reply('Ping?')
+        else message.reply('Pong!')
     }
 }
