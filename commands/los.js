@@ -1,6 +1,6 @@
 module.exports = {
     name: "los",
-    description: "",
+    description: "Losuje liczbę od 0 do podanej liczby",
     aliases: ['los'],
     usage: 'los [liczba]',
     execute(client, message, args) {

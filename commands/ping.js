@@ -1,9 +1,9 @@
 module.exports = {
     name: "ping",
-    description: "",
+    description: "Odpowiada: Pong!",
     aliases: ['pong'],
     usage: 'ping',
     execute(client, message) {
-        message.reply('pong');
+        message.reply('Pong!');
     }
 }

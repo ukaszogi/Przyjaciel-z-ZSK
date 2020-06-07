@@ -1,6 +1,6 @@
 module.exports = {
     name: "zadania",
-    description: "",
+    description: "Pokazuje zadania na najbliższy miesiąc",
     aliases: ['zad', 'z'],
     usage: 'zadania',
     execute(client, message) {

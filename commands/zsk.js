@@ -1,6 +1,6 @@
 module.exports = {
     name: "zsk",
-    description: "",
+    description: "Ręczne dodawanie sprawdzianów, kartkówek lub zadań domowych",
     aliases: ['zsk'],
     usage: '$zsk spr (up) [grupa] [nie pamiętam xD]',
     execute(client, message, args) {

@@ -1,6 +1,6 @@
 module.exports = {
     name: "wisielec",
-    description: "",
+    description: "Chcesz zagrać w wisielca? To komenda specjalnie dla ciebie",
     aliases: ['wis'],
     usage: 'wisielec start [hasło]\npo rozoczęciu gry: wi [literka]',
     execute(client, message, args) {

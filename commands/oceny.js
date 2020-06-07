@@ -1,6 +1,6 @@
 module.exports = {
     name: "oceny",
-    description: "",
+    description: "Pokazuje najnowsze oceny ucznia lub oceny z podanego przedmiotu",
     aliases: ['o', 'ocenki', 'oc'],
     usage: 'oceny wszystkie | [pełna nazwa przedmiotu]',
     execute(client, message, args) {

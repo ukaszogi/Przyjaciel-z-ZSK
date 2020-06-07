@@ -1,6 +1,6 @@
 module.exports = {
     name: "reload",
-    description: "",
+    description: "Przeładowuje komendę. (Tylko właściciel bota może użyć tej komendy)",
     aliases: ['przeładuj', 'rld'],
     usage: 'reload [komenda]',
     execute(client, message, args) {

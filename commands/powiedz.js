@@ -1,6 +1,6 @@
 module.exports = {
     name: "powiedz",
-    description: "",
+    description: "Powtarza wszystko po 'powiedz '",
     aliases: ['tell', 'say'],
     usage: 'powiedz [coś co bot ma powtórzyć]',
     execute(client, message, args) {

@@ -1,6 +1,6 @@
 module.exports = {
     name: "plan",
-    description: "",
+    description: "Pokazuje plan na dzisiaj, jutro lub wybrany dzień",
     aliases: ['p'],
     usage: 'plan dzisiaj | jutro | [rok] [miesiąc] [dzień]',
     execute(client, message, args) {

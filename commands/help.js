@@ -1,8 +1,8 @@
 module.exports = {
     name: "help",
-    description: "Shows this message",
+    description: "Pokazuje tę wiadomość",
     aliases: ['pomoc', '?', 'commands'],
-    usage: 'help [command]',
+    usage: 'help [komenda]',
     execute(client, message, args) {
         const fs = require('fs')
         let listaKomend = ""
@@ -18,6 +18,11 @@ module.exports = {
                 if (command.name === args[0]) {
                     komenda = command
                 }
+                command.aliases.forEach(function (item) {
+                    if (item === args[0]) {
+                        komenda = command
+                    }
+                })
             });
 
             const exampleEmbed = (args.length<1) ? {
@@ -65,7 +70,7 @@ module.exports = {
                 fields: [
                     {
                         name: 'Użycie',
-                        value: komenda.usage,
+                        value: "`" + client.config.prefix + komenda.usage + "`",
                     },
                     {
                         name: 'Co robi ta komenda?',

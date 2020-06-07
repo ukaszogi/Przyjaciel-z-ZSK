@@ -1,6 +1,6 @@
 module.exports = {
     name: "login",
-    description: "",
+    description: "Pozwala na zalogowanie się do konta Vulcan tokenem, symbolem oraz pinem które używa się do zalogowania w dzienniczek+",
     aliases: ['login'],
     usage: 'login [token] [symbol] [pin]',
     execute(client, message, args) {

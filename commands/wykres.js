@@ -1,6 +1,6 @@
 module.exports = {
     name: "wykres",
-    description: "",
+    description: "Pokazuje wykres czasu dostania oceny od średniej ocen z podanego przedmiotu lub z wszystkich przedmiotów",
     "aliases": ['w', 'wyk', 'wykres'],
     usage: 'wykres wszystkie | [pełna nazwa przedmiotu]',
     execute(client, message, args) {

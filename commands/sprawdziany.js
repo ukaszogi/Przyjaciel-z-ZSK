@@ -1,6 +1,6 @@
 module.exports = {
     name: "sprawdziany",
-    description: "",
+    description: "Pokazuje kartkówki i sprawdziany na następny miesiąc",
     aliases: ['s', 'spr', 'kart', 'kartkówki', 'kartkowki', 'k'],
     usage: 'sprawdziany',
     execute(client, message) {
