@@ -27,7 +27,7 @@ module.exports = {
         przedmiotWybrany = przedmiotWybrany.toLowerCase()
 
         const uuidv4 = require('uuidv4'),
-            signer = require("@wulkanowy/uonet-request-signer"),
+            signer = require("@wulkanowy/uonet-request-signer-node"),
             request = require("request"),
 
             certificateKey1 = jdo[pozycja].certyfikatKlucz,

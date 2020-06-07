@@ -22,7 +22,7 @@ module.exports = {
         }
 
         const uuidv4 = require('uuidv4'),
-            signer = require("@wulkanowy/uonet-request-signer"),
+            signer = require("@wulkanowy/uonet-request-signer-node"),
             request = require("request"),
             uonet = require("../uonet.js"),
 

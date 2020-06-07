@@ -16,7 +16,7 @@ module.exports = {
         }
 
         const uuidv4 = require('uuidv4')
-        const signer = require("@wulkanowy/uonet-request-signer");
+        const signer = require("@wulkanowy/uonet-request-signer-node");
         const request = require("request")
         const fs = require("fs")
         const jdo = require("../wrazliweDane.json")

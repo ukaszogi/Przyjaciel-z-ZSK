@@ -28,7 +28,7 @@ module.exports = {
 
         const uuidv4 = require('uuidv4'),
             svgToImg = require("svg-to-img"),
-            signer = require("@wulkanowy/uonet-request-signer"),
+            signer = require("@wulkanowy/uonet-request-signer-node"),
             req = require("request"),
 
             certificateKey1 = jdo[pozycja].certyfikatKlucz,

@@ -5,8 +5,7 @@
   "main": "bot.js",
   "author": "author",
   "dependencies": {
-    "@wulkanowy/uonet-request-signer": "^0.2.1",
-    "@wulkanowy/uonet-request-signer-node": "file:node_modules/@wulkanowy/uonet-request-signer",
+    "@wulkanowy/uonet-request-signer-node": "^0.1.1",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "discord.js": "^11.6.4",
     "enmap": "^5.2.4",
