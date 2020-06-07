@@ -5,7 +5,6 @@ module.exports = {
     usage: 'help [komenda]',
     execute(client, message, args) {
         const fs = require('fs')
-        let listaKomend = ""
         let komenda
         fs.readdir("./commands", (err, files) => {
             if (err) return console.error(err);
@@ -14,7 +13,6 @@ module.exports = {
                 let commandName = file.split(".")[0];
                 let command = client.commands.get(commandName)
                     || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-                listaKomend += command.name + ", "
                 if (command.name === args[0]) {
                     komenda = command
                 }
@@ -40,7 +38,7 @@ module.exports = {
                     },
                     {
                         name: 'Lista dostępnych komend',
-                        value: listaKomend.slice(0, -2) + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
+                        value: client.config.publicCommands + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
                         inline: false,
                     },
                     {
