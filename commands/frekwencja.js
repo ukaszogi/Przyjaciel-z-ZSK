@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['f', 'frek', 'fr', 'frekwencje'],
     usage: 'frekwencja',
     category: 'vulcan',
-    execute(client, message, args) {
+    execute(client, message/*, args*/) {
 
         const jdo = require("../wrazliweDane.json")
         let pozycja = null
@@ -25,6 +25,7 @@ module.exports = {
         const uuidv4 = require('uuidv4'),
             signer = require("@wulkanowy/uonet-request-signer-node"),
             request = require("request"),
+            svgToImg = require("svg-to-img"),
 
             certificateKey1 = jdo[pozycja].certyfikatKlucz,
             password1 = require("../auth.json").password,
@@ -149,11 +150,43 @@ module.exports = {
                                             kategoria + "\n"
                                 }
                             })
+                            let wykresUrl = "https://www.chartgo.com/create.do?charttype=pie&width=700&height=500&chrtbkgndcolor=gradientblue&labelorientation=horizontal&title=Frekwencja&subtitle=&xtitle=&ytitle=&source=&fonttypetitle=bold&fonttypelabel=normal&max_yaxis=&min_yaxis=&threshold=&show3d=1&legend=1&gradient=1&border=1&xaxis1=obecno%C5%9Bci%0D%0Anieobecno%C5%9Bci&yaxis1="
                             let frekProc = (((tabwynik.length - inneNizObecnosc) / tabwynik.length) * 100).toFixed(2)
-                            message.channel.send("Frekwencja w tym okresie wynosi: " + frekProc + "%")
+                            wykresUrl += frekProc.toString() + "%0D%0A" + (100-frekProc).toString() + "&group1=Group+1&groupcolor1=defaultgroupcolours&file=&viewsource=mainView&language=en&sectionSetting=false&sectionSpecific=false&sectionData=false&usePost="
+
+                            let doWyslania = "Frekwencja w tym okresie wynosi: " + frekProc + "%"
                             if (inneNizObecnosc > 0)
-                                message.channel.send("```" + calusienkie + "```")
-                            else message.channel.send("Brak nieobecności")
+                                doWyslania += "```" + calusienkie + "```\nwykres:"
+                            else doWyslania += "\nBrak nieobecności"
+                            let cookie
+                            let zdjecie
+                            request({
+                                url: wykresUrl
+                            }, function (err, res) {
+                                cookie = res.headers['set-cookie']
+                                request({
+                                    headers: {
+                                        "Referer": wykresUrl,
+                                        "User-Agent": "Mozilla/5.0",
+                                        "Accept-Encoding": "gzip, deflate, br",
+                                        "Host": "www.chartgo.com",
+                                        "Cookie": cookie
+                                    },
+                                    url: "https://www.chartgo.com//downloadSVG.do",
+                                }, function (err, res, body) {
+                                    try {
+                                        (async () => {
+                                            let bodziak = body.toString().substr(body.search("<svg"), body.length - body.search("<svg"))
+                                            zdjecie = await svgToImg.from(bodziak).toPng({
+                                                width: 1400
+                                            });
+                                            message.channel.send(doWyslania, {files: [zdjecie]})
+                                        })();
+                                    } catch (e) {
+                                        console.log(e)
+                                    }
+                                });
+                            })
                         } else {
                             message.channel.send("Nie znaleziono frekwencji")
                         }
