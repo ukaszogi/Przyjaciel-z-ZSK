@@ -3,6 +3,7 @@ module.exports = {
     description: "Pokazuje plan na dzisiaj, jutro lub wybrany dzień",
     aliases: ['p'],
     usage: 'plan dzisiaj | jutro | [rok] [miesiąc] [dzień]',
+    category: 'vulcan',
     execute(client, message, args) {
 
         const jdo = require("../wrazliweDane.json")

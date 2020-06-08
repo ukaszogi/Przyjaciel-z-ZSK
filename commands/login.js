@@ -3,6 +3,7 @@ module.exports = {
     description: "Pozwala na zalogowanie się do konta Vulcan tokenem, symbolem oraz pinem które używa się do zalogowania w dzienniczek+",
     aliases: ['login'],
     usage: 'login [token] [symbol] [pin]',
+    category: 'vulcan',
     execute(client, message, args) {
         if (message.guild !== null) {
             message.channel.startTyping()

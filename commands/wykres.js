@@ -3,6 +3,7 @@ module.exports = {
     description: "Pokazuje wykres czasu dostania oceny od średniej ocen z podanego przedmiotu lub z wszystkich przedmiotów",
     "aliases": ['w', 'wyk', 'wykres'],
     usage: 'wykres wszystkie | [pełna nazwa przedmiotu]',
+    category: 'vulcan',
     execute(client, message, args) {
 
         const jdo = require("../wrazliweDane.json")

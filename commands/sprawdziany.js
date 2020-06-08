@@ -3,6 +3,7 @@ module.exports = {
     description: "Pokazuje kartkówki i sprawdziany na następny miesiąc",
     aliases: ['s', 'spr', 'kart', 'kartkówki', 'kartkowki', 'k'],
     usage: 'sprawdziany',
+    category: 'vulcan',
     execute(client, message) {
 
         const jdo = require("../wrazliweDane.json")

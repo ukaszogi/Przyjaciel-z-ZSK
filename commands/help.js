@@ -3,9 +3,10 @@ module.exports = {
     description: "Pokazuje tę wiadomość",
     aliases: ['pomoc', '?', 'commands'],
     usage: 'help [komenda]',
+    category: 'other',
     execute(client, message, args) {
         const fs = require('fs')
-        let komenda
+        let komenda, listaKomend = []
         fs.readdir("./commands", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
@@ -13,6 +14,7 @@ module.exports = {
                 let commandName = file.split(".")[0];
                 let command = client.commands.get(commandName)
                     || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+                listaKomend.push(command)
                 if (command.name === args[0]) {
                     komenda = command
                 }
@@ -22,6 +24,12 @@ module.exports = {
                     }
                 })
             });
+            let komendyVulcan = [], komendyZabawa = [], komendyInne = []
+            listaKomend.forEach(function (item) {
+                if (item.category === 'vulcan') komendyVulcan.push(item.name)
+                else if (item.category === 'fun') komendyZabawa.push(item.name)
+                else if (item.category === 'other') komendyInne.push(item.name)
+            })
 
             const exampleEmbed = (args.length<1) ? {
                 color: 0x28166f,
@@ -38,7 +46,7 @@ module.exports = {
                     },
                     {
                         name: 'Lista dostępnych komend',
-                        value: client.config.publicCommands + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
+                        value: "***Vulcan:*** " + komendyVulcan.join(", ") + "\n***Zabawne:*** " + komendyZabawa.join(", ") + "\n***Inne:*** " + komendyInne.join(", ") + "\nAby uzyskać więcej informacji o komendzie wpisz: `" + client.config.prefix + "help [komenda]`",
                         inline: false,
                     },
                     {

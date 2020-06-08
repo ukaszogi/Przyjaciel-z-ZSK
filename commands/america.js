@@ -3,6 +3,7 @@ module.exports = {
     description: "Odpowiada: FUCK YEAH!!!",
     aliases: ['ameryka'],
     usage: 'america',
+    category: 'fun',
     execute(client, message) {
         message.channel.send("FUCK YEAH!!!");
     }

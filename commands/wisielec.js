@@ -3,6 +3,7 @@ module.exports = {
     description: "Chcesz zagrać w wisielca? To komenda specjalnie dla ciebie",
     aliases: ['wis'],
     usage: 'wisielec start [hasło]\npo rozoczęciu gry: wi [literka]',
+    category: 'fun',
     execute(client, message, args) {
         const wisielson = require("./../wisiel.json")
         let zgadywane = [];

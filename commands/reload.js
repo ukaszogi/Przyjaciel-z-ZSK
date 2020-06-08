@@ -3,6 +3,7 @@ module.exports = {
     description: "Przeładowuje komendę. (Tylko właściciel bota może użyć tej komendy)",
     aliases: ['przeładuj', 'rld'],
     usage: 'reload [komenda]',
+    category: 'admin',
     execute(client, message, args) {
         let auth = require("../auth.json")
         if (!(message.author.id === auth.ownerIDMat || message.author.id === auth.ownerIDLuk)) {

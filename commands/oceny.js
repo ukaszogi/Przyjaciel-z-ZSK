@@ -3,6 +3,7 @@ module.exports = {
     description: "Pokazuje najnowsze oceny ucznia lub oceny z podanego przedmiotu",
     aliases: ['o', 'ocenki', 'oc'],
     usage: 'oceny wszystkie | [pełna nazwa przedmiotu]',
+    category: 'vulcan',
     execute(client, message, args) {
 
         const jdo = require("../wrazliweDane.json")

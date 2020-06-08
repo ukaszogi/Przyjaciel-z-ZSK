@@ -3,6 +3,7 @@ module.exports = {
     description: "Pokazuje zadania na najbliższy miesiąc",
     aliases: ['zad', 'z'],
     usage: 'zadania',
+    category: 'vulcan',
     execute(client, message) {
 
         const jdo = require("../wrazliweDane.json")

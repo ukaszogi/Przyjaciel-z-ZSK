@@ -3,6 +3,7 @@ module.exports = {
     description: "Ręczne dodawanie sprawdzianów, kartkówek lub zadań domowych",
     aliases: ['zsk'],
     usage: '$zsk spr (up) [grupa] [nie pamiętam xD]',
+    category: 'other',
     execute(client, message, args) {
         const funk = require("./../funk.js");
 
