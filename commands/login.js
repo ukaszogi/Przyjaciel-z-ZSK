@@ -48,6 +48,8 @@ module.exports = {
             idOddzial: 0,
             idOkresKlasyfikacyjny: 0,
             idUczen: 0,
+            okresDataOdTekst: "",
+            okresDataDoTekst: "",
             certyfikatKlucz: "",
             certyfikatPfx: ""
         }
