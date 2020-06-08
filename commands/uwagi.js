@@ -75,34 +75,21 @@ module.exports = {
                 let tabwynik = []
 
                 uwagiJson.forEach(function (item) {
-                        tabwynik.push(item["DataWpisuTekst"] + "," + item["TrescUwagi"] + "," + item["PracownikImie"] + " " + item["PracownikNazwisko"])
+                        tabwynik.push(item["DataWpisuTekst"] + "," + item["PracownikImie"] + " " + item["PracownikNazwisko"] + "," + item["TrescUwagi"])
                     }
                 )
 
                 if (tabwynik.length > 0) {
                     tabwynik.sort()
                     tabwynik.reverse()
-                    let liData = 0, liTresc = 0
-                    tabwynik.forEach(function (item) {
-                        let cale = item.split(",")
-                        if (cale[0].length > liData) liData = cale[0].length
-                        if (cale[1].length > liTresc) liTresc = cale[1].length
-
-                    })
-                    let calusienkie = `POCHWAŁY I UWAGI ${dataPoczatkowa} - ${dataKoncowa}\ndata${spacja(liData - 1)}treść${spacja(liTresc - 2)}nauczyciel\n`
+                    let calusienkie = `POCHWAŁY I UWAGI ${dataPoczatkowa} - ${dataKoncowa}\n`
                     tabwynik.forEach(function (item) {
                         let cale = item.split(",")
                         let data = cale[0]
                         let tresc = cale[1]
                         let nauczyciel = cale[2]
-                        let caltest = calusienkie + data + spacja(3 + liData - data.length) +
-                            tresc + spacja(3 + liTresc - tresc.length) +
-                            nauczyciel + "\n"
-                        if (caltest.length < 2000)
-                            calusienkie +=
-                                data + spacja(3 + liData - data.length) +
-                                tresc + spacja(3 + liTresc - tresc.length) +
-                                nauczyciel + "\n"
+                        let caltest = calusienkie + data + "  " + tresc + "  " + nauczyciel + "\n"
+                        if (caltest.length < 2000) calusienkie += data + "  " + tresc + "  " + nauczyciel + "\n"
 
                     })
                     message.channel.send("```" + calusienkie + "```")
@@ -113,13 +100,5 @@ module.exports = {
                 message.channel.stopTyping()
             });
         });
-
-        function spacja(ile) {
-            let spac = ""
-            for (i = 1; i <= ile; i++) {
-                spac += " "
-            }
-            return spac
-        }
     }
 }
