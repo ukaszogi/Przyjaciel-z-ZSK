@@ -104,41 +104,62 @@ module.exports = {
                         if (ocenyLista.length > 0) {
                             ocenyLista.sort()
                             ocenyLista.reverse()
-                            let liData = 0, liOcena = 0, liWaga = 0, liOpis = 0, liPrzedmiot = 0
-                            ocenyLista.forEach(function (item) {
-                                let cale = item.split(",,,")
-                                przedmioty.forEach(function (item) {
-                                    if (item["Id"].toString() === cale[4] && (item["Nazwa"].toString().toLowerCase() === przedmiotWybrany || przedmiotWybrany === "wszystkie")) {
-                                        let nazwa = item["Nazwa"]
-                                        if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
-                                        if (cale[0].length > liData) liData = cale[0].length
-                                        if (cale[1].length > liOcena) liOcena = cale[1].length
-                                        if (cale[2].length > liWaga) liWaga = cale[2].length
-                                        if (cale[3].length > liOpis) liOpis = cale[3].length
+                            let tabOceny = [] //Tablica z stringami ["Matematyka: 5, 5-, 3+","Przyroda: 3, 1, 2+"]
+                            if (przedmiotWybrany === "wszystkie") {
+                                przedmioty.forEach(function (przedmiot) {
+                                    let sameOcenyTab = []
+                                    ocenyLista.forEach(function (ocena) {
+                                        let cale = ocena.split(",,,")
+                                        if (przedmiot["Id"].toString() === cale[4]) {
+                                            sameOcenyTab.push(cale[1])
+                                        }
+                                    })
+                                    if (sameOcenyTab.length > 0) {
+                                        let stringDoPush = przedmiot["Nazwa"] + ": " +sameOcenyTab.join(", ")
+                                        tabOceny.push(stringDoPush)
                                     }
                                 })
-                            })
-                            let calusienkie = `\nOCENY\ndata${spacja(liData - 1)}wpis${spacja(liOcena - 1)}waga${spacja(liWaga - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
-                            ocenyLista.forEach(function (item) {
-                                let cale = item.split(",,,")
-                                dataTekst = cale[0]
-                                ocena = cale[1]
-                                waga = cale[2]
-                                opis = cale[3]
-                                if (opis.length === 0) opis = "(Brak opisu)"
-                                przedmioty.forEach(function (item) {
-                                    if (item["Id"].toString() === cale[4]) przedmiot = item["Nazwa"]
-                                })
-                                nauczyciele.forEach(function (item) {
-                                    if (item["Id"].toString() === cale[5]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
-                                })
-                                if (przedmiotWybrany === "wszystkie" || przedmiot.toString().toLowerCase() === przedmiotWybrany) {
-                                    let calTest = calusienkie + dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
-                                    if (calTest.length < 2000)
-                                        calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                if (tabOceny.length > 0) {
+                                    message.channel.send("```OCENY\n" + tabOceny.join("\n") + "\n\nJeżeli chcesz zobaczyć szczegóły wpisz: " + client.config.prefix + "oceny [przedmiot]```")
                                 }
-                            })
-                            message.channel.send("```" + calusienkie + "```")
+                                else message.channel.send("Nie znalazłem ocen z żadnego przedmiotu")
+                            } else {
+                                let liData = 0, liOcena = 0, liWaga = 0, liOpis = 0, liPrzedmiot = 0
+                                ocenyLista.forEach(function (item) {
+                                    let cale = item.split(",,,")
+                                    przedmioty.forEach(function (item) {
+                                        if (item["Id"].toString() === cale[4] && (item["Nazwa"].toString().toLowerCase() === przedmiotWybrany || przedmiotWybrany === "wszystkie")) {
+                                            let nazwa = item["Nazwa"]
+                                            if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
+                                            if (cale[0].length > liData) liData = cale[0].length
+                                            if (cale[1].length > liOcena) liOcena = cale[1].length
+                                            if (cale[2].length > liWaga) liWaga = cale[2].length
+                                            if (cale[3].length > liOpis) liOpis = cale[3].length
+                                        }
+                                    })
+                                })
+                                let calusienkie = `\nOCENY\ndata${spacja(liData - 1)}wpis${spacja(liOcena - 1)}waga${spacja(liWaga - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
+                                ocenyLista.forEach(function (item) {
+                                    let cale = item.split(",,,")
+                                    dataTekst = cale[0]
+                                    ocena = cale[1]
+                                    waga = cale[2]
+                                    opis = cale[3]
+                                    if (opis.length === 0) opis = "(Brak opisu)"
+                                    przedmioty.forEach(function (item) {
+                                        if (item["Id"].toString() === cale[4]) przedmiot = item["Nazwa"]
+                                    })
+                                    nauczyciele.forEach(function (item) {
+                                        if (item["Id"].toString() === cale[5]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
+                                    })
+                                    if (przedmiot.toString().toLowerCase() === przedmiotWybrany) {
+                                        let calTest = calusienkie + dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                        if (calTest.length < 2000)
+                                            calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + ocena + spacja(3 + liOcena - ocena.length) + waga + spacja(3 + liWaga - waga.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                    }
+                                })
+                                message.channel.send("```" + calusienkie + "```")
+                            }
                         } else {
                             message.channel.send("Nie znalazłem żadnych ocen")
                         }
