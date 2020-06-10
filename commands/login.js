@@ -48,6 +48,8 @@ module.exports = {
             idOddzial: 0,
             idOkresKlasyfikacyjny: 0,
             idUczen: 0,
+            adresBazowyRestApi: "",
+            jsSymbol: 0,
             okresDataOdTekst: "",
             okresDataDoTekst: "",
             certyfikatKlucz: "",
@@ -95,6 +97,7 @@ module.exports = {
                 let json = JSON.parse(body)
                 jdz.certyfikatKlucz = json["TokenCert"]["CertyfikatKlucz"]
                 jdz.certyfikatPfx = json["TokenCert"]["CertyfikatPfx"]
+                jdz.adresBazowyRestApi = json["TokenCert"]["AdresBazowyRestApi"]
 
                 signer.signContent(password, jdz.certyfikatPfx, JSON.stringify(formListaUczniow)).then(signed => {
                     console.log("\n\nsigned\n" + signed + "\n\n\n");
@@ -114,6 +117,9 @@ module.exports = {
                             jdz.idUczen = dzejson["Data"][0]["Id"]
                             jdz.idOddzial = dzejson["Data"][0]["IdOddzial"]
                             jdz.idOkresKlasyfikacyjny = dzejson["Data"][0]["IdOkresKlasyfikacyjny"]
+                            jdz.jsSymbol = dzejson["Data"][0]["JednostkaSprawozdawczaSymbol"]
+                            jdz.okresDataOdTekst = dzejson["Data"][0]["OkresDataOdTekst"]
+                            jdz.okresDataDoTekst = dzejson["Data"][0]["OkresDataDoTekst"]
                             console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n")
                             jdo.push(jdz)
                             fs.writeFile("./wrazliweDane.json", JSON.stringify(jdo), (err) => {
