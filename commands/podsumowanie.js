@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['prop', 'kon', 'koncowe', 'srednie', 'sr', 'średnie', 'końcowe', 'koń', 'ko' ,'sr', 'śr', 'pr', 'podsumowanie', 'pod', 'po'],
     usage: 'podsumowanie',
     category: 'vulcan',
-    execute(client, message, args) {
+    execute(client, message/*, args*/) {
 
         const jdo = require("../wrazliweDane.json")
         let pozycja = null
@@ -70,7 +70,6 @@ module.exports = {
                 const srednieOcenJson = json["Data"]["SrednieOcen"]
                 let przedmioty
                 const ocenyKlasyfikacyjneLista = [], ocenyProponowaneLista = [], srednieOcenLista = []
-                let przedmiot, wpis ,srednieOcen
 
                 ocenyKlsyfikacyjneJson.forEach(function (item) {
                         ocenyKlasyfikacyjneLista.push(item["Wpis"] + ",,," + item["IdPrzedmiot"])
@@ -140,13 +139,5 @@ module.exports = {
             });
             message.channel.stopTyping()
         });
-
-        function spacja(ile) {
-            let spacyjka = ""
-            for (let i = 1; i <= ile; i++) {
-                spacyjka += " "
-            }
-            return spacyjka
-        }
     }
 }
