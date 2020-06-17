@@ -42,7 +42,7 @@ module.exports = {
                 fields: [
                     {
                         name: 'Zaproszenie',
-                        value: 'Link do zaproszenia wkrótce się tutaj znajdzie ;)',
+                        value: 'https://discord.com/api/oauth2/authorize?client_id=651399623646380062&permissions=8&scope=bot',
                     },
                     {
                         name: 'Lista dostępnych komend',
