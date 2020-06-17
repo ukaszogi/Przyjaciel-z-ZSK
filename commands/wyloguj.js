@@ -5,7 +5,7 @@ module.exports = {
     usage: 'wyloguj',
     category: 'vulcan',
     execute(client, message) {
-        message.channel.send("Czy na pewno chcesz się wylogować?");
+        message.channel.send("Czy na pewno chcesz się wylogować? Jeżeli tak: zareaguj '👍', a jeżeli nie: zareaguj '👎' lub zignoruj wiadomość.");
         message.react('👍').then(() => message.react('👎'));
 
         const filter = (reaction, user) => {

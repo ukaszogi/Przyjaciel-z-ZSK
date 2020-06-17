@@ -38,7 +38,7 @@ module.exports = {
                     const token = args[0],
                         symbol = args[1],
                         pin = args[2],
-                        host = "https://lekcjaplus.vulcan.net.pl/",
+                        host = require("../hosty.json")[token.substr(0, 3)],
                         firebaseTokenKey = require("../config.json").FirebaseTokenKey,
                         urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat",
                         urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow",
@@ -116,18 +116,51 @@ module.exports = {
                                 }, function (err, res, body) {
                                     console.log(body.toString())
                                     try {
-                                        let dzejson = JSON.parse(body)
-                                        jdz.idUczen = dzejson["Data"][0]["Id"]
-                                        jdz.idOddzial = dzejson["Data"][0]["IdOddzial"]
-                                        jdz.idOkresKlasyfikacyjny = dzejson["Data"][0]["IdOkresKlasyfikacyjny"]
-                                        jdz.jsSymbol = dzejson["Data"][0]["JednostkaSprawozdawczaSymbol"]
-                                        jdz.okresDataOdTekst = dzejson["Data"][0]["OkresDataOdTekst"]
-                                        jdz.okresDataDoTekst = dzejson["Data"][0]["OkresDataDoTekst"]
-                                        console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
-                                        (async () => {
-                                            await keyv.set(message.author.id, JSON.stringify(jdz))
-                                            console.log(await keyv.get(message.author.id))
-                                        })()
+                                        let dzejson = JSON.parse(body);
+                                            let pozycja = 0, konta = `Znaleziono więcej niż jedno konto ucznia. Można zalogować się tylko na jedno konto. Wybierz które:\n`
+                                            if (dzejson["Data"].length > 1) {
+                                                dzejson["Data"].forEach(function (item, position) {
+                                                    konta += `${position+1}. ` + item["UzytkownikNazwa"] + "\n"
+                                                })
+                                                (async () => {
+                                                message.channel.send(konta).then(() => {
+                                                    const filter = m => isNaN(m.content) && parseInt(m.content) < dzejson["Data"].length && parseInt(m.content) >= 0
+                                                    const collector = message.channel.createMessageCollector(filter, {time: 30000});
+
+                                                    collector.on('collect', async m => {
+                                                        console.log(`Collected ${parseInt(m.content)} ${parseInt(m.content)} isNaN?: ${isNaN(parseInt(m.content))}`);
+                                                        pozycja = parseInt(m.content)
+                                                        collector.stop("Logowanie...")
+                                                        jdz.idUczen = dzejson["Data"][pozycja]["Id"]
+                                                        jdz.idOddzial = dzejson["Data"][pozycja]["IdOddzial"]
+                                                        jdz.idOkresKlasyfikacyjny = dzejson["Data"][pozycja]["IdOkresKlasyfikacyjny"]
+                                                        jdz.jsSymbol = dzejson["Data"][pozycja]["JednostkaSprawozdawczaSymbol"]
+                                                        jdz.okresDataOdTekst = dzejson["Data"][pozycja]["OkresDataOdTekst"]
+                                                        jdz.okresDataDoTekst = dzejson["Data"][pozycja]["OkresDataDoTekst"]
+                                                        console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
+                                                        await keyv.set(message.author.id, JSON.stringify(jdz))
+                                                        console.log(await keyv.get(message.author.id))
+                                                    });
+
+                                                    collector.on('end', collected => {
+                                                        console.log(`Anulowano logowanie.`);
+                                                    });
+                                                });
+                                            })()
+                                            } else {
+                                                (async () => {
+                                                    pozycja = 0
+                                                    jdz.idUczen = dzejson["Data"][pozycja]["Id"]
+                                                    jdz.idOddzial = dzejson["Data"][pozycja]["IdOddzial"]
+                                                    jdz.idOkresKlasyfikacyjny = dzejson["Data"][pozycja]["IdOkresKlasyfikacyjny"]
+                                                    jdz.jsSymbol = dzejson["Data"][pozycja]["JednostkaSprawozdawczaSymbol"]
+                                                    jdz.okresDataOdTekst = dzejson["Data"][pozycja]["OkresDataOdTekst"]
+                                                    jdz.okresDataDoTekst = dzejson["Data"][pozycja]["OkresDataDoTekst"]
+                                                    console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
+                                                    await keyv.set(message.author.id, JSON.stringify(jdz))
+                                                    console.log(await keyv.get(message.author.id))
+                                                })()
+                                            }
                                         message.channel.send("Zarejestrowano urządzenie mobilne")
                                         message.channel.stopTyping()
                                     } catch (e) {
@@ -149,7 +182,7 @@ module.exports = {
                 }
             })
             .catch(collected => {
-                message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
+                message.reply('Nie zareagowano. Anulowano logowanie');
             });
 
     }
