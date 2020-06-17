@@ -19,32 +19,21 @@ module.exports = {
         const uuidv4 = require('uuidv4')
         const signer = require("@wulkanowy/uonet-request-signer-node");
         const request = require("request")
-        const fs = require("fs")
-        const jdo = require("../wrazliweDane.json")
-        let isInDatabass = false
-
-        jdo.forEach(function (item) {
-            if (item["dcId"] === message.author.id) isInDatabass = true
-        })
-
-        if (isInDatabass) {
-            message.channel.send("Już jesteś zalogowany. Nie musisz się logować 2 razy")
-            return
-        }
+        const Keyv = require("keyv")
+        const keyv = new Keyv(require("../config.json").pathToDatabase)
 
         const token = args[0],
             symbol = args[1],
             pin = args[2],
             host = "https://lekcjaplus.vulcan.net.pl/",
-            firebaseTokenKey = require("../auth.json").FirebaseTokenKey,
+            firebaseTokenKey = require("../config.json").FirebaseTokenKey,
             urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat",
             urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow",
-            password = require("../auth.json").password,
+            password = require("../config.json").password,
             timekey = Math.floor(Date.now() / 1000),
             timekey1 = timekey - 1
 
         let jdz = {
-            dcId: message.author.id,
             idOddzial: 0,
             idOkresKlasyfikacyjny: 0,
             idUczen: 0,
@@ -112,6 +101,7 @@ module.exports = {
                         body: JSON.stringify(formListaUczniow),
                         method: 'POST'
                     }, function (err, res, body) {
+                        console.log(body.toString())
                         try {
                             let dzejson = JSON.parse(body)
                             jdz.idUczen = dzejson["Data"][0]["Id"]
@@ -120,11 +110,15 @@ module.exports = {
                             jdz.jsSymbol = dzejson["Data"][0]["JednostkaSprawozdawczaSymbol"]
                             jdz.okresDataOdTekst = dzejson["Data"][0]["OkresDataOdTekst"]
                             jdz.okresDataDoTekst = dzejson["Data"][0]["OkresDataDoTekst"]
-                            console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n")
-                            jdo.push(jdz)
-                            fs.writeFile("./wrazliweDane.json", JSON.stringify(jdo), (err) => {
-                                if (err) console.error(err)
-                            });
+                            console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
+                            // jdo.push(jdz)
+                            // fs.writeFile("./wrazliweDane.json", JSON.stringify(jdo), (err) => {
+                            //     if (err) console.error(err)
+                            // });
+                            (async () => {
+                                await keyv.set(message.author.id, JSON.stringify(jdz))
+                                console.log(await keyv.get(message.author.id))
+                            })()
                             message.channel.send("Zarejestrowano urządzenie mobilne")
                             message.channel.stopTyping()
                         } catch (e) {

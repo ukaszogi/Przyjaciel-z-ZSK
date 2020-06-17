@@ -5,7 +5,7 @@ module.exports = {
     usage: 'reload [komenda]',
     category: 'admin',
     execute(client, message, args) {
-        let auth = require("../auth.json")
+        let auth = require("../config.json")
         if (!(message.author.id === auth.ownerIDMat || message.author.id === auth.ownerIDLuk)) {
             return;
         }

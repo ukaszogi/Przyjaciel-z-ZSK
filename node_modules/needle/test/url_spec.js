@@ -38,10 +38,18 @@ describe('urls', function() {
       url = 'foo://google.com/what'
     })
 
-    it('fails', function(done) {
-      send_request(function(err){
+    it('does not throw', function(done) {
+      (function() {
+        send_request(function(err) { 
+          done();
+        })
+      }).should.not.throw()
+    })
+
+    it('returns an error', function(done) {
+      send_request(function(err) {
         err.should.be.an.Error;
-        err.code.should.eql('ENOTFOUND');
+        err.code.should.match(/ENOTFOUND|EADDRINFO|EAI_AGAIN/)
         done();
       })
     })
@@ -51,7 +59,7 @@ describe('urls', function() {
   describe('invalid host', function(){
 
     before(function() {
-      url = 'http://s1\\\2.com/'
+      url = 'http://s1\\\u0002.com/'
     })
 
     it('fails', function(done) {
