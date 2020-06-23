@@ -97,56 +97,61 @@ module.exports = {
                         try {
                             console.log(body)
                             let json = JSON.parse(body)
-                            jdz.certyfikatKlucz = json["TokenCert"]["CertyfikatKlucz"]
-                            jdz.certyfikatPfx = json["TokenCert"]["CertyfikatPfx"]
-                            jdz.adresBazowyRestApi = json["TokenCert"]["AdresBazowyRestApi"]
+                            if (json["IsError"] && json["Message"] === "TokenNotFound") {
+                                message.channel.send("Podano nieprawidłowe dane. Przoszę spróbować ponownie")
+                                message.channel.stopTyping()
+                            } else {
+                                jdz.certyfikatKlucz = json["TokenCert"]["CertyfikatKlucz"]
+                                jdz.certyfikatPfx = json["TokenCert"]["CertyfikatPfx"]
+                                jdz.adresBazowyRestApi = json["TokenCert"]["AdresBazowyRestApi"]
 
-                            signer.signContent(password, jdz.certyfikatPfx, JSON.stringify(formListaUczniow)).then(signed => {
-                                console.log("\n\nsigned\n" + signed + "\n\n\n");
-                                request({
-                                    headers: {
-                                        'Content-Type': 'application/json; charset=utf-8',
-                                        'RequestCertificateKey': jdz.certyfikatKlucz,
-                                        'RequestSignatureValue': signed,
-                                        'User-Agent': 'MobileUserAgent'
-                                    },
-                                    url: urlListaUczniow,
-                                    body: JSON.stringify(formListaUczniow),
-                                    method: 'POST'
-                                }, function (err, res, body) {
-                                    console.log(body.toString())
-                                    try {
-                                        let dzejson = JSON.parse(body);
-                                            let pozycja = 0, konta = `Znaleziono więcej niż jedno konto ucznia. Można zalogować się tylko na jedno konto. Wybierz które:\n`
+                                signer.signContent(password, jdz.certyfikatPfx, JSON.stringify(formListaUczniow)).then(signed => {
+                                    console.log("\n\nsigned\n" + signed + "\n\n\n");
+                                    request({
+                                        headers: {
+                                            'Content-Type': 'application/json; charset=utf-8',
+                                            'RequestCertificateKey': jdz.certyfikatKlucz,
+                                            'RequestSignatureValue': signed,
+                                            'User-Agent': 'MobileUserAgent'
+                                        },
+                                        url: urlListaUczniow,
+                                        body: JSON.stringify(formListaUczniow),
+                                        method: 'POST'
+                                    }, function (err, res, body) {
+                                        console.log(body.toString())
+                                        try {
+                                            let dzejson = JSON.parse(body);
+                                            let pozycja = 0,
+                                                konta = `Znaleziono więcej niż jedno konto ucznia. Można zalogować się tylko na jedno konto. Wybierz które:\n`
                                             if (dzejson["Data"].length > 1) {
                                                 dzejson["Data"].forEach(function (item, position) {
-                                                    konta += `${position+1}. ` + item["UzytkownikNazwa"] + "\n"
+                                                    konta += `${position + 1}. ` + item["UzytkownikNazwa"] + "\n"
                                                 })
                                                 (async () => {
-                                                message.channel.send(konta).then(() => {
-                                                    const filter = m => isNaN(m.content) && parseInt(m.content) < dzejson["Data"].length && parseInt(m.content) >= 0
-                                                    const collector = message.channel.createMessageCollector(filter, {time: 30000});
+                                                    message.channel.send(konta).then(() => {
+                                                        const filter = m => isNaN(m.content) && parseInt(m.content) < dzejson["Data"].length && parseInt(m.content) >= 0
+                                                        const collector = message.channel.createMessageCollector(filter, {time: 30000});
 
-                                                    collector.on('collect', async m => {
-                                                        console.log(`Collected ${parseInt(m.content)} ${parseInt(m.content)} isNaN?: ${isNaN(parseInt(m.content))}`);
-                                                        pozycja = parseInt(m.content)
-                                                        collector.stop("Logowanie...")
-                                                        jdz.idUczen = dzejson["Data"][pozycja]["Id"]
-                                                        jdz.idOddzial = dzejson["Data"][pozycja]["IdOddzial"]
-                                                        jdz.idOkresKlasyfikacyjny = dzejson["Data"][pozycja]["IdOkresKlasyfikacyjny"]
-                                                        jdz.jsSymbol = dzejson["Data"][pozycja]["JednostkaSprawozdawczaSymbol"]
-                                                        jdz.okresDataOdTekst = dzejson["Data"][pozycja]["OkresDataOdTekst"]
-                                                        jdz.okresDataDoTekst = dzejson["Data"][pozycja]["OkresDataDoTekst"]
-                                                        console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
-                                                        await keyv.set(message.author.id, JSON.stringify(jdz))
-                                                        console.log(await keyv.get(message.author.id))
-                                                    });
+                                                        collector.on('collect', async m => {
+                                                            console.log(`Collected ${parseInt(m.content)} ${parseInt(m.content)} isNaN?: ${isNaN(parseInt(m.content))}`);
+                                                            pozycja = parseInt(m.content)
+                                                            collector.stop("Logowanie...")
+                                                            jdz.idUczen = dzejson["Data"][pozycja]["Id"]
+                                                            jdz.idOddzial = dzejson["Data"][pozycja]["IdOddzial"]
+                                                            jdz.idOkresKlasyfikacyjny = dzejson["Data"][pozycja]["IdOkresKlasyfikacyjny"]
+                                                            jdz.jsSymbol = dzejson["Data"][pozycja]["JednostkaSprawozdawczaSymbol"]
+                                                            jdz.okresDataOdTekst = dzejson["Data"][pozycja]["OkresDataOdTekst"]
+                                                            jdz.okresDataDoTekst = dzejson["Data"][pozycja]["OkresDataDoTekst"]
+                                                            console.log(jdz.idOkresKlasyfikacyjny + "\n" + jdz.idOddzial + "\n" + jdz.idUczen + "\n" + jdz.certyfikatPfx + "\n" + jdz.certyfikatKlucz + "\n");
+                                                            await keyv.set(message.author.id, JSON.stringify(jdz))
+                                                            console.log(await keyv.get(message.author.id))
+                                                        });
 
-                                                    collector.on('end', collected => {
-                                                        console.log(`Anulowano logowanie.`);
+                                                        collector.on('end', collected => {
+                                                            console.log(`Anulowano logowanie.`);
+                                                        });
                                                     });
-                                                });
-                                            })()
+                                                })()
                                             } else {
                                                 (async () => {
                                                     pozycja = 0
@@ -161,15 +166,16 @@ module.exports = {
                                                     console.log(await keyv.get(message.author.id))
                                                 })()
                                             }
-                                        message.channel.send("Zarejestrowano urządzenie mobilne")
-                                        message.channel.stopTyping()
-                                    } catch (e) {
-                                        console.log(e.toString())
-                                        message.channel.send("Wystąpił błąd. Prawdopodobnie źle wpisałeś komendę")
-                                        message.channel.stopTyping()
-                                    }
+                                            message.channel.send("Zarejestrowano urządzenie mobilne")
+                                            message.channel.stopTyping()
+                                        } catch (e) {
+                                            console.log(e.toString())
+                                            message.channel.send("Wystąpił błąd. Prawdopodobnie źle wpisałeś komendę")
+                                            message.channel.stopTyping()
+                                        }
+                                    });
                                 });
-                            });
+                            }
 
                         } catch (e) {
                             console.log(e.toString())

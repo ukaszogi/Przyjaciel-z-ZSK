@@ -11,9 +11,8 @@ module.exports = {
         let jdo
 
         (async () => {
-            console.log(await keyv.get(message.author.id))
             let jestWBazie = await keyv.get(message.author.id)
-            console.log("jest w bazie: " + jestWBazie)
+            console.log("jest w bazie: " + (jestWBazie ? "true" : "false") + "\nkto: " + message.author.id)
             if (!jestWBazie) {
                 message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `" + client.config.prefix + "login [token] [symbol] [pin]`")
                 return
@@ -67,32 +66,37 @@ module.exports = {
                     body: formData,
                     method: 'POST'
                 }, function (err, res, body) {
-                    const json = JSON.parse(body);
-                    console.log("Status: " + json.Status);
-                    const uwagiJson = json["Data"]
-                    let tabwynik = []
+                    if (body.toString() !== "Bad Request") {
+                        const json = JSON.parse(body);
+                        console.log("Status: " + json.Status);
+                        const uwagiJson = json["Data"]
+                        let tabwynik = []
 
-                    uwagiJson.forEach(function (item) {
-                            tabwynik.push(item["DataWpisuTekst"] + "," + item["PracownikImie"] + " " + item["PracownikNazwisko"] + "," + item["TrescUwagi"])
+                        uwagiJson.forEach(function (item) {
+                                tabwynik.push(item["DataWpisuTekst"] + "," + item["PracownikImie"] + " " + item["PracownikNazwisko"] + "," + item["TrescUwagi"])
+                            }
+                        )
+
+                        if (tabwynik.length > 0) {
+                            tabwynik.sort()
+                            tabwynik.reverse()
+                            let calusienkie = `POCHWAŁY I UWAGI ${dataPoczatkowa} - ${dataKoncowa}\n`
+                            tabwynik.forEach(function (item) {
+                                let cale = item.split(",")
+                                let data = cale[0]
+                                let tresc = cale[1]
+                                let nauczyciel = cale[2]
+                                let caltest = calusienkie + data + "  " + tresc + "  " + nauczyciel + "\n"
+                                if (caltest.length < 2000) calusienkie += data + "  " + tresc + "  " + nauczyciel + "\n"
+
+                            })
+                            message.channel.send("```" + calusienkie + "```")
+                        } else {
+                            message.channel.send("Nie znaleziono żadnych pochwał i uwag")
                         }
-                    )
-
-                    if (tabwynik.length > 0) {
-                        tabwynik.sort()
-                        tabwynik.reverse()
-                        let calusienkie = `POCHWAŁY I UWAGI ${dataPoczatkowa} - ${dataKoncowa}\n`
-                        tabwynik.forEach(function (item) {
-                            let cale = item.split(",")
-                            let data = cale[0]
-                            let tresc = cale[1]
-                            let nauczyciel = cale[2]
-                            let caltest = calusienkie + data + "  " + tresc + "  " + nauczyciel + "\n"
-                            if (caltest.length < 2000) calusienkie += data + "  " + tresc + "  " + nauczyciel + "\n"
-
-                        })
-                        message.channel.send("```" + calusienkie + "```")
                     } else {
-                        message.channel.send("Nie znaleziono żadnych pochwał i uwag")
+                        console.log("Bad Request")
+                        message.channel.send("Coś poszło nie tak. Prawdopodobie wyrejestrowałeś/aś urządzenie na stronie internetowej. Sprawdź czy \"Przyjaciel z ZSK\" nadal widnieje na liście zarejestrowanych urządzeń. Jeżeli nie: zaloguj się ponownie.")
                     }
 
                     message.channel.stopTyping()
