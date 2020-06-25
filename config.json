@@ -1,0 +1,9 @@
+{
+	"Token": "TOKEN",
+	"prefix": "PREFIX",
+	"pathToDatabase": "PATH_TO_DATABASE",
+	"password": "PASSWORD",
+	"FirebaseTokenKey": "FIRE_BASE_TOKEN_KEY",
+	"ownerIDMat": "OWNER_ID_MAT",
+	"ownerIDLuk": "OWNER_ID_LUK"
+}
