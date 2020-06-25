@@ -25,7 +25,8 @@
     "svg-to-img": "^2.0.9"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bot.js"
   },
   "keywords": [],
   "license": "ISC",
