@@ -5,17 +5,17 @@ exports.getDataPoczatkowa = function (rokWybrany, miesiacWybrany, dzienWybrany, 
         rokPocz = rokWybrany
         miesiacPocz = miesiacWybrany - 1
         dzienPocz = new Date(rokWybrany, miesiacWybrany - 1, 0).getDate() + (dzienWybrany - (dzienTygWybrany - 1))
-        console.log("\n1 if pocz")
+        console.log("1 if pocz")
     } else if (dzienWybrany - (dzienTygWybrany - 1) < 0 && miesiacWybrany - 1 <= 0) {
         rokPocz = parseInt(rokWybrany) - 1
         miesiacPocz = 12
         dzienPocz = 31 + (dzienWybrany - (dzienTygWybrany - 1))
-        console.log("\n2 if pocz")
+        console.log("2 if pocz")
     } else {
         rokPocz = rokWybrany
         miesiacPocz = miesiacWybrany
         dzienPocz = dzienWybrany - (dzienTygWybrany - 1)
-        console.log("\n3 if pocz")
+        console.log("3 if pocz")
     }
     if (miesiacPocz < 10) miesiacPocz = "0" + miesiacPocz
     if (dzienPocz < 10) dzienPocz = "0" + dzienPocz

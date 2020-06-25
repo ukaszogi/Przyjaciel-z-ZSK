@@ -6,6 +6,8 @@
   "author": "author",
   "dependencies": {
     "@keyv/mongo": "^1.1.0",
+    "@keyv/mysql": "^1.1.4",
+    "@keyv/postgres": "^1.0.16",
     "@keyv/redis": "^2.1.2",
     "@keyv/sqlite": "^2.0.2",
     "@wulkanowy/uonet-request-signer-node": "^0.1.1",
@@ -14,6 +16,7 @@
     "keyv": "^4.0.1",
     "node-nmap": "^4.0.0",
     "node-opus": "^0.3.3",
+    "node-pre-gyp": "^0.15.0",
     "querystring": "^0.2.0",
     "request": "^2.88.2",
     "svg-to-png": "^4.0.0",

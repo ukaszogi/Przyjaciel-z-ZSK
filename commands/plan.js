@@ -11,11 +11,10 @@ module.exports = {
         let jdo
 
         (async () => {
-            console.log(await keyv.get(message.author.id))
             let jestWBazie = await keyv.get(message.author.id)
-            console.log("jest w bazie: " + jestWBazie)
+            console.log("jest w bazie: " + (jestWBazie ? "true" : "false") + "\nkto: " + message.author.id)
             if (!jestWBazie) {
-                message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `"+ client.config.prefix + "login [token] [symbol] [pin]`")
+                message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `" + client.config.prefix + "login [token] [symbol] [pin]`")
                 return
             }
             jdo = JSON.parse((await keyv.get(message.author.id)).toString())
@@ -98,79 +97,84 @@ module.exports = {
                     body: formData,
                     method: 'POST'
                 }, function (err, res, body) {
-                    const json = JSON.parse(body);
-                    console.log("Status: " + json.Status);
-                    const lekcje = json.Data
-                    let nauczyciele, pory
-                    const tabwynik = []
-                    let lekcja = "", co = "", gdzie = "", zKim = "", godzina = ""
+                    if (body.toString() !== "Bad Request") {
+                        const json = JSON.parse(body);
+                        console.log("Status: " + json.Status);
+                        const lekcje = json.Data
+                        let nauczyciele, pory
+                        const tabwynik = []
+                        let lekcja = "", co = "", gdzie = "", zKim = "", godzina = ""
 
-                    lekcje.forEach(function (item) {
-                            if (item.DzienTekst === dataWybrana && item.PlanUcznia === true) {
-                                tabwynik.push(item.NumerLekcji + "," + item.Sala + "," + item.PrzedmiotNazwa + "," + item.IdPoraLekcji + "," + item.IdPracownik)
+                        lekcje.forEach(function (item) {
+                                if (item.DzienTekst === dataWybrana && item.PlanUcznia === true) {
+                                    tabwynik.push(item.NumerLekcji + "," + item.Sala + "," + item.PrzedmiotNazwa + "," + item.IdPoraLekcji + "," + item.IdPracownik)
+                                }
                             }
-                        }
-                    )
+                        )
 
-                    signer.signContent(password1, certificate1, formData2).then(signed2 => {
-                        request({
-                            headers: {
-                                'Content-Type': 'application/json; charset=utf-8',
-                                'RequestCertificateKey': certificateKey1,
-                                'RequestSignatureValue': signed2,
-                                'User-Agent': 'MobileUserAgent'
-                            },
-                            url: urlSlowniki,
-                            body: formData2,
-                            method: 'POST'
-                        }, function (err, res, body) {
-                            let data = JSON.parse(body).Data
-                            nauczyciele = data.Nauczyciele
-                            pory = data.PoryLekcji
+                        signer.signContent(password1, certificate1, formData2).then(signed2 => {
+                            request({
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8',
+                                    'RequestCertificateKey': certificateKey1,
+                                    'RequestSignatureValue': signed2,
+                                    'User-Agent': 'MobileUserAgent'
+                                },
+                                url: urlSlowniki,
+                                body: formData2,
+                                method: 'POST'
+                            }, function (err, res, body) {
+                                let data = JSON.parse(body).Data
+                                console.log("Status: " + JSON.parse(body).Status);
+                                nauczyciele = data.Nauczyciele
+                                pory = data.PoryLekcji
 
-                            if (tabwynik.length > 0) {
-                                tabwynik.sort()
-                                let liNumer = 0, liSala = 0, liPrzedmiot = 0, liNauczyciel = 0
-                                tabwynik.forEach(function (item) {
-                                    cale = item.split(",")
-                                    if (cale[0].length > liNumer) liNumer = cale[0].length
-                                    if (cale[1].length > liSala) liSala = cale[1].length
-                                    if (cale[2].length > liPrzedmiot) liPrzedmiot = cale[2].length
-                                    if (cale[4].length > liNauczyciel) liNauczyciel = cale[4].length
-                                })
-                                let calusienkie = `PLAN LEKCJI - ${dzienNazwa}\nnr${spacja(liNumer + 1)}sala${spacja(liSala - 1)}godziny${spacja(7)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
-                                tabwynik.forEach(function (item) {
-                                    cale = item.split(",")
-                                    lekcja = cale[0]
-                                    gdzie = cale[1]
-                                    co = cale[2]
-                                    pory.forEach(function (item) {
-                                        if (item["Id"].toString() === cale[3]) godzina = item.PoczatekTekst + "-" + item.KoniecTekst
+                                if (tabwynik.length > 0) {
+                                    tabwynik.sort()
+                                    let liNumer = 0, liSala = 0, liPrzedmiot = 0, liNauczyciel = 0
+                                    tabwynik.forEach(function (item) {
+                                        cale = item.split(",")
+                                        if (cale[0].length > liNumer) liNumer = cale[0].length
+                                        if (cale[1].length > liSala) liSala = cale[1].length
+                                        if (cale[2].length > liPrzedmiot) liPrzedmiot = cale[2].length
+                                        if (cale[4].length > liNauczyciel) liNauczyciel = cale[4].length
                                     })
-                                    nauczyciele.forEach(function (item) {
-                                        if (item["Id"].toString() === cale[4]) zKim = item.Imie + " " + item.Nazwisko
+                                    let calusienkie = `PLAN LEKCJI - ${dzienNazwa}\nnr${spacja(liNumer + 1)}sala${spacja(liSala - 1)}godziny${spacja(7)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
+                                    tabwynik.forEach(function (item) {
+                                        cale = item.split(",")
+                                        lekcja = cale[0]
+                                        gdzie = cale[1]
+                                        co = cale[2]
+                                        pory.forEach(function (item) {
+                                            if (item["Id"].toString() === cale[3]) godzina = item.PoczatekTekst + "-" + item.KoniecTekst
+                                        })
+                                        nauczyciele.forEach(function (item) {
+                                            if (item["Id"].toString() === cale[4]) zKim = item.Imie + " " + item.Nazwisko
+                                        })
+                                        pel = godzina.split("-")
+                                        hour = new Date().getHours()
+                                        minut = new Date().getMinutes()
+                                        if (
+                                            parseInt(pel[0].split(":")[0]) <= hour &&
+                                            parseInt(pel[0].split(":")[1]) <= minut &&
+                                            parseInt(pel[1].split(":")[0]) >= hour &&
+                                            parseInt(pel[1].split(":")[1]) >= minut && dz
+                                        ) {
+                                            calusienkie += calusienkie += lekcja + ">" + spacja(3 + liNumer - lekcja.length - 1) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
+                                        } else calusienkie += lekcja + spacja(3 + liNumer - lekcja.length) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
                                     })
-                                    pel = godzina.split("-")
-                                    hour = new Date().getHours()
-                                    minut = new Date().getMinutes()
-                                    if (
-                                        parseInt(pel[0].split(":")[0]) <= hour &&
-                                        parseInt(pel[0].split(":")[1]) <= minut &&
-                                        parseInt(pel[1].split(":")[0]) >= hour &&
-                                        parseInt(pel[1].split(":")[1]) >= minut && dz
-                                    ) {
-                                        calusienkie += calusienkie += lekcja + ">" + spacja(3 + liNumer - lekcja.length - 1) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
-                                    } else calusienkie += lekcja + spacja(3 + liNumer - lekcja.length) + gdzie + spacja(3 + liSala - gdzie.length) + godzina + "   " + co + spacja(3 + liPrzedmiot - co.length) + zKim + "\n"
-                                })
-                                message.channel.send("```" + calusienkie + "```")
-                            } else {
-                                message.channel.send("Nie znalazłem żadnej lekcji tego dnia.")
-                            }
+                                    message.channel.send("```" + calusienkie + "```")
+                                } else {
+                                    message.channel.send("Nie znalazłem żadnej lekcji tego dnia.")
+                                }
+                            });
                         });
-                    });
-
-                    message.channel.stopTyping()
+                    } else {
+                        console.log("Bad Request")
+                        message.channel.send("Coś poszło nie tak. Prawdopodobie wyrejestrowałeś/aś urządzenie na stronie internetowej. Sprawdź czy \"Przyjaciel z ZSK\" nadal widnieje na liście zarejestrowanych urządzeń. Jeżeli nie: zaloguj się ponownie.")
+                    }
                 });
+                message.channel.stopTyping()
             });
 
             function spacja(ile) {

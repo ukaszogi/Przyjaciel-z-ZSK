@@ -11,9 +11,8 @@ module.exports = {
         let jdo
 
         (async () => {
-            console.log(await keyv.get(message.author.id))
             let jestWBazie = await keyv.get(message.author.id)
-            console.log("jest w bazie: " + jestWBazie)
+            console.log("jest w bazie: " + (jestWBazie ? "true" : "false") + "\nkto: " + message.author.id)
             if (!jestWBazie) {
                 message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `" + client.config.prefix + "login [token] [symbol] [pin]`")
                 return
@@ -84,69 +83,75 @@ module.exports = {
                     body: formData,
                     method: 'POST'
                 }, function (err, res, body) {
-                    const json = JSON.parse(body);
-                    console.log("Status: " + json.Status);
-                    const zadaniaJson = json.Data
-                    let nauczyciele, przedmioty
-                    const zadaniaLista = []
-                    let opis, dataTekst, przedmiot, nauczyciel
+                    if (body.toString() !== "Bad Request") {
+                        const json = JSON.parse(body);
+                        console.log("Status: " + json.Status);
+                        const zadaniaJson = json.Data
+                        let nauczyciele, przedmioty
+                        const zadaniaLista = []
+                        let opis, dataTekst, przedmiot, nauczyciel
 
-                    zadaniaJson.forEach(function (item) {
-                            zadaniaLista.push(item["DataTekst"] + ",,," + item["Opis"] + ",,," + item["IdPrzedmiot"] + ",,," + item["IdPracownik"])
-                        }
-                    )
-
-                    signer.signContent(password1, certificate1, formData2).then(signed2 => {
-                        request({
-                            headers: {
-                                'Content-Type': 'application/json; charset=utf-8',
-                                'RequestCertificateKey': certificateKey1,
-                                'RequestSignatureValue': signed2,
-                                'User-Agent': 'MobileUserAgent'
-                            },
-                            url: urlSlowniki,
-                            body: formData2,
-                            method: 'POST'
-                        }, function (err, res, body) {
-                            let data = JSON.parse(body).Data
-                            nauczyciele = data["Nauczyciele"]
-                            przedmioty = data["Przedmioty"]
-
-                            if (zadaniaLista.length > 0) {
-                                zadaniaLista.sort()
-                                let liData = 0, liOpis = 0, liPrzedmiot = 0
-                                zadaniaLista.forEach(function (item) {
-                                    let cale = item.split(",,,")
-                                    if (cale[0].length > liData) liData = cale[0].length
-                                    if (cale[1].length > liOpis) liOpis = cale[1].length
-                                    przedmioty.forEach(function (item) {
-                                        if (item["Id"].toString() === cale[2]) {
-                                            let nazwa = item["Nazwa"]
-                                            if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
-                                        }
-                                    })
-                                })
-                                let calusienkie = `\nZADANIA DOMOWE\ndata${spacja(liData - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
-                                zadaniaLista.forEach(function (item) {
-                                    let cale = item.split(",,,")
-                                    dataTekst = cale[0]
-                                    opis = cale[1]
-                                    if (opis.length === 0) opis = "(Brak opisu)"
-                                    przedmioty.forEach(function (item) {
-                                        if (item["Id"].toString() === cale[2]) przedmiot = item["Nazwa"]
-                                    })
-                                    nauczyciele.forEach(function (item) {
-                                        if (item["Id"].toString() === cale[3]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
-                                    })
-                                    calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
-
-                                })
-                                message.channel.send("```" + calusienkie + "```")
-                            } else {
-                                message.channel.send("Nie znalazłem żadnych zadań domowych na następny miesiąc.")
+                        zadaniaJson.forEach(function (item) {
+                                zadaniaLista.push(item["DataTekst"] + ",,," + item["Opis"] + ",,," + item["IdPrzedmiot"] + ",,," + item["IdPracownik"])
                             }
+                        )
+
+                        signer.signContent(password1, certificate1, formData2).then(signed2 => {
+                            request({
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8',
+                                    'RequestCertificateKey': certificateKey1,
+                                    'RequestSignatureValue': signed2,
+                                    'User-Agent': 'MobileUserAgent'
+                                },
+                                url: urlSlowniki,
+                                body: formData2,
+                                method: 'POST'
+                            }, function (err, res, body) {
+                                let data = JSON.parse(body).Data
+                                console.log("Status: " + JSON.parse(body).Status);
+                                nauczyciele = data["Nauczyciele"]
+                                przedmioty = data["Przedmioty"]
+
+                                if (zadaniaLista.length > 0) {
+                                    zadaniaLista.sort()
+                                    let liData = 0, liOpis = 0, liPrzedmiot = 0
+                                    zadaniaLista.forEach(function (item) {
+                                        let cale = item.split(",,,")
+                                        if (cale[0].length > liData) liData = cale[0].length
+                                        if (cale[1].length > liOpis) liOpis = cale[1].length
+                                        przedmioty.forEach(function (item) {
+                                            if (item["Id"].toString() === cale[2]) {
+                                                let nazwa = item["Nazwa"]
+                                                if (nazwa.length > liPrzedmiot) liPrzedmiot = nazwa.length
+                                            }
+                                        })
+                                    })
+                                    let calusienkie = `\nZADANIA DOMOWE\ndata${spacja(liData - 1)}opis${spacja(liOpis - 1)}przedmiot${spacja(liPrzedmiot - 6)}nauczyciel\n`
+                                    zadaniaLista.forEach(function (item) {
+                                        let cale = item.split(",,,")
+                                        dataTekst = cale[0]
+                                        opis = cale[1]
+                                        if (opis.length === 0) opis = "(Brak opisu)"
+                                        przedmioty.forEach(function (item) {
+                                            if (item["Id"].toString() === cale[2]) przedmiot = item["Nazwa"]
+                                        })
+                                        nauczyciele.forEach(function (item) {
+                                            if (item["Id"].toString() === cale[3]) nauczyciel = item["Imie"] + " " + item["Nazwisko"]
+                                        })
+                                        calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+
+                                    })
+                                    message.channel.send("```" + calusienkie + "```")
+                                } else {
+                                    message.channel.send("Nie znalazłem żadnych zadań domowych na następny miesiąc.")
+                                }
+                            });
                         });
-                    });
+                    } else {
+                        console.log("Bad Request")
+                        message.channel.send("Coś poszło nie tak. Prawdopodobie wyrejestrowałeś/aś urządzenie na stronie internetowej. Sprawdź czy \"Przyjaciel z ZSK\" nadal widnieje na liście zarejestrowanych urządzeń. Jeżeli nie: zaloguj się ponownie.")
+                    }
                 });
                 message.channel.stopTyping()
             });

@@ -11,9 +11,8 @@ module.exports = {
         let jdo
 
         (async () => {
-            console.log(await keyv.get(message.author.id))
             let jestWBazie = await keyv.get(message.author.id)
-            console.log("jest w bazie: " + jestWBazie)
+            console.log("jest w bazie: " + (jestWBazie ? "true" : "false") + "\nkto: " + message.author.id)
             if (!jestWBazie) {
                 message.channel.send("najpierw musisz się zalogować pisząc bezpośrednio **do mnie** prywatną wiadomość używając komendy: `" + client.config.prefix + "login [token] [symbol] [pin]`")
                 return
@@ -83,6 +82,7 @@ module.exports = {
                     body: formData,
                     method: 'POST'
                 }, function (err, res, body) {
+                    if (body.toString() !== "Bad Request") {
                     const json = JSON.parse(body);
                     console.log("Status: " + json.Status);
                     const sprKartJson = json.Data
@@ -108,6 +108,7 @@ module.exports = {
                             method: 'POST'
                         }, function (err, res, body) {
                             let data = JSON.parse(body).Data
+                            console.log("Status: " + JSON.parse(body).Status);
                             nauczyciele = data["Nauczyciele"]
                             przedmioty = data["Przedmioty"]
 
@@ -167,6 +168,10 @@ module.exports = {
                             }
                         });
                     });
+                    } else {
+                        console.log("Bad Request")
+                        message.channel.send("Coś poszło nie tak. Prawdopodobie wyrejestrowałeś/aś urządzenie na stronie internetowej. Sprawdź czy \"Przyjaciel z ZSK\" nadal widnieje na liście zarejestrowanych urządzeń. Jeżeli nie: zaloguj się ponownie.")
+                    }
                 });
                 message.channel.stopTyping()
             });
