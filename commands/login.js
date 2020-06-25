@@ -5,6 +5,15 @@ module.exports = {
     usage: 'login [token] [symbol] [pin]',
     category: 'vulcan',
     execute(client, message, args) {
+        const config = {
+            "Token": process.env.TOKEN,
+            "prefix": process.env.PREFIX,
+            "pathToDatabase": process.env.PATH_TO_DATABASE,
+            "password": process.env.PASSWORD,
+            "FirebaseTokenKey": process.env.FIRE_BASE_TOKEN_KEY,
+            "ownerIDMat": process.env.OWNER_ID_MAT,
+            "ownerIDLuk": process.env.OWNER_ID_LUK
+        }
         if (message.guild !== null) {
             message.channel.startTyping()
             message.delete()
@@ -33,16 +42,16 @@ module.exports = {
                     const signer = require("@wulkanowy/uonet-request-signer-node");
                     const request = require("request")
                     const Keyv = require("keyv")
-                    const keyv = new Keyv(require("../config.json").pathToDatabase)
+                    const keyv = new Keyv(config.pathToDatabase)
 
                     const token = args[0],
                         symbol = args[1],
                         pin = args[2],
                         host = require("../hosty.json")[token.substr(0, 3)],
-                        firebaseTokenKey = require("../config.json").FirebaseTokenKey,
+                        firebaseTokenKey = config.FirebaseTokenKey,
                         urlCertyfikat = host + symbol + "/mobile-api/Uczen.v3.UczenStart/Certyfikat",
                         urlListaUczniow = host + symbol + "/mobile-api/Uczen.v3.UczenStart/ListaUczniow",
-                        password = require("../config.json").password,
+                        password = config.password,
                         timekey = Math.floor(Date.now() / 1000),
                         timekey1 = timekey - 1
 

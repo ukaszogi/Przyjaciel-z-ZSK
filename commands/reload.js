@@ -5,7 +5,16 @@ module.exports = {
     usage: 'reload [komenda]',
     category: 'admin',
     execute(client, message, args) {
-        let auth = require("../config.json")
+        let auth = {
+            "Token": process.env.TOKEN,
+            "prefix": process.env.PREFIX,
+            "pathToDatabase": process.env.PATH_TO_DATABASE,
+            "password": process.env.PASSWORD,
+            "FirebaseTokenKey": process.env.FIRE_BASE_TOKEN_KEY,
+            "ownerIDMat": process.env.OWNER_ID_MAT,
+            "ownerIDLuk": process.env.OWNER_ID_LUK
+        }
+
         if (!(message.author.id === auth.ownerIDMat || message.author.id === auth.ownerIDLuk)) {
             return;
         }
