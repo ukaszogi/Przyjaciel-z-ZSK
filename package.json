@@ -25,8 +25,7 @@
     "svg-to-img": "^2.0.9",
     "winston": "^3.2.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bot.js"
