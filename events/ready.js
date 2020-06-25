@@ -1,11 +1,12 @@
 module.exports = (client) => {
-    console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+    console.log(`Gotowy do działania na ${client.guilds.size} serwerach, ${client.channels.size} kanałach, dla  ${client.users.size} ludzików.`);
+
     //set custom status
     client.user.setPresence({
         status: "online",
         game: {
-            name: "z przyjaciółmi z ZSK",
-            type: "PLAYING" //PLAYING or WATCHING or LISTENING or STREAMING
+            name: "ZSK TV",
+            type: "WATCHING" //PLAYING or WATCHING or LISTENING or STREAMING
         }
     });
 }
