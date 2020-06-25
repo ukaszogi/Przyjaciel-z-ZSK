@@ -1,6 +1,15 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const config = require("./config.json");
+const config = {
+        "Token": process.env.TOKEN,
+        "prefix": process.env.PREFIX,
+        "pathToDatabase": process.env.PATH_TO_DATABASE,
+        "password": process.env.PASSWORD,
+        "FirebaseTokenKey": process.env.FIRE_BASE_TOKEN_KEY,
+        "ownerIDMat": process.env.OWNER_ID_MAT,
+        "ownerIDLuk": process.env.OWNER_ID_LUK
+    }
+;
 const fs = require('fs')
 client.config = config;
 

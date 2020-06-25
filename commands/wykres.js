@@ -5,9 +5,18 @@ module.exports = {
     usage: 'wykres wszystkie | [pełna nazwa przedmiotu]',
     category: 'vulcan',
     execute(client, message, args) {
+        const config = {
+            "Token": process.env.TOKEN,
+            "prefix": process.env.PREFIX,
+            "pathToDatabase": process.env.PATH_TO_DATABASE,
+            "password": process.env.PASSWORD,
+            "FirebaseTokenKey": process.env.FIRE_BASE_TOKEN_KEY,
+            "ownerIDMat": process.env.OWNER_ID_MAT,
+            "ownerIDLuk": process.env.OWNER_ID_LUK
+        }
 
         const Keyv = require("keyv")
-        const keyv = new Keyv(require("../config.json").pathToDatabase)
+        const keyv = new Keyv(config.pathToDatabase)
         let jdo
 
         (async () => {
@@ -36,7 +45,7 @@ module.exports = {
                 req = require("request"),
 
                 certificateKey1 = jdo.certyfikatKlucz,
-                password1 = require("../config.json").password,
+                password1 = config.password,
                 certificate1 = jdo.certyfikatPfx,
                 urlOceny = `${jdo["adresBazowyRestApi"]}${jdo["jsSymbol"]}/mobile-api/Uczen.v3.Uczen/Oceny`,
                 urlSlowniki = `${jdo["adresBazowyRestApi"]}${jdo["jsSymbol"]}/mobile-api/Uczen.v3.Uczen/Slowniki`,

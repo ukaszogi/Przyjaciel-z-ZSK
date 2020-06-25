@@ -5,10 +5,20 @@ module.exports = {
     usage: 'plan dzisiaj | jutro | [rok] [miesiąc] [dzień]',
     category: 'vulcan',
     execute(client, message, args) {
+        const config = {
+            "Token": process.env.TOKEN,
+            "prefix": process.env.PREFIX,
+            "pathToDatabase": process.env.PATH_TO_DATABASE,
+            "password": process.env.PASSWORD,
+            "FirebaseTokenKey": process.env.FIRE_BASE_TOKEN_KEY,
+            "ownerIDMat": process.env.OWNER_ID_MAT,
+            "ownerIDLuk": process.env.OWNER_ID_LUK
+        }
 
         const Keyv = require("keyv")
-        const keyv = new Keyv(require("../config.json").pathToDatabase)
+        const keyv = new Keyv(config.pathToDatabase)
         let jdo
+
 
         (async () => {
             let jestWBazie = await keyv.get(message.author.id)
@@ -31,7 +41,7 @@ module.exports = {
                 uonet = require("../uonet.js"),
 
                 certificateKey1 = jdo.certyfikatKlucz,
-                password1 = require("../config.json").password,
+                password1 = config.password,
                 certificate1 = jdo.certyfikatPfx,
                 urlPlan = `${jdo["adresBazowyRestApi"]}${jdo["jsSymbol"]}/mobile-api/Uczen.v3.Uczen/PlanLekcjiZeZmianami`,
                 urlSlowniki = `${jdo["adresBazowyRestApi"]}${jdo["jsSymbol"]}/mobile-api/Uczen.v3.Uczen/Slowniki`,
