@@ -181,7 +181,7 @@ module.exports = {
                                                 "Host": "www.chartgo.com",
                                                 "Cookie": cookie
                                             },
-                                            url: "https://www.chartgo.com//downloadSVG.do",
+                                            url: "https://www.chartgo.com/downloadSVG.do",
                                         }, function (err, res, body) {
                                             try {
                                                 (async () => {
