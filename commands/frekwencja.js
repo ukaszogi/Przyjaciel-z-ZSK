@@ -122,16 +122,17 @@ module.exports = {
                                         let kategoria = "(brak kategorii)"
                                         kategorie.forEach(function (item) {
                                             if (item["Id"].toString() === cale[3]) {
-                                                kategoria = item["Nazwa"]
+                                                kategoria = item
                                             }
                                         })
-                                        if (kategoria !== 'obecność') {
+                                        if (!kategoria["Obecnosc"]) {
                                             if (cale[0].length > liData) liData = cale[0].length
                                             if (cale[1].length > liPrzedmiot) liPrzedmiot = cale[1].length
                                             if (cale[2].length > liNumer) liNumer = cale[2].length
                                         }
                                     })
                                     let inneNizObecnosc = 0
+                                    let undefindy = 0
                                     let calusienkie = `Frekwencja ${dataPoczatkowa} - ${dataKoncowa}\ndata${spacja(liData - 1)}przedmiot${spacja(liPrzedmiot - 6)}nr${spacja(liNumer + 1)}kategoria\n`
                                     tabwynik.forEach(function (item) {
                                         let cale = item.split(",")
@@ -139,28 +140,31 @@ module.exports = {
                                         let przedmiot = cale[1]
                                         let numer = cale[2]
                                         let kategoria = "(brak kategorii)"
-                                        let inneNizObecnosc = 0
                                         kategorie.forEach(function (item) {
                                             if (item["Id"].toString() === cale[3]) {
                                                 kategoria = item
                                             }
                                         })
-                                        if (!kategoria["Obecnosc"]) {
+                                        if (kategoria === undefined)
+                                            undefindy++
+                                        if (!kategoria["Obecnosc"] && kategoria["Obecnosc"] !== undefined) {
                                             inneNizObecnosc++
                                             let caltest = calusienkie + data + spacja(3 + liData - data.length) +
                                                 przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) +
                                                 numer + spacja(3 + liNumer - numer.length) +
-                                                kategoria + "\n"
-                                            if (caltest.length < 2000)
+                                                kategoria["Nazwa"] + "\n"
+                                            if (caltest.length < 1982) {
                                                 calusienkie +=
                                                     data + spacja(3 + liData - data.length) +
                                                     przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) +
                                                     numer + spacja(3 + liNumer - numer.length) +
-                                                    kategoria + "\n"
+                                                    kategoria["Nazwa"] + "\n"
+                                            }
+                                            else calusienkie += "..."
                                         }
                                     })
                                     let wykresUrl = "https://www.chartgo.com/create.do?charttype=pie&width=700&height=500&chrtbkgndcolor=gradientblue&labelorientation=horizontal&title=Frekwencja&subtitle=&xtitle=&ytitle=&source=&fonttypetitle=bold&fonttypelabel=normal&max_yaxis=&min_yaxis=&threshold=&show3d=1&legend=1&gradient=1&border=1&xaxis1=obecno%C5%9Bci%0D%0Anieobecno%C5%9Bci&yaxis1="
-                                    let frekProc = (((tabwynik.length - inneNizObecnosc) / tabwynik.length) * 100).toFixed(2)
+                                    let frekProc = ((((tabwynik.length-undefindy) - inneNizObecnosc) / (tabwynik.length-undefindy)) * 100).toFixed(2)
                                     wykresUrl += frekProc.toString() + "%0D%0A" + (100 - frekProc).toString() + "&group1=Group+1&groupcolor1=defaultgroupcolours&file=&viewsource=mainView&language=en&sectionSetting=false&sectionSpecific=false&sectionData=false&usePost="
 
                                     let doWyslania = "Frekwencja w tym okresie wynosi: " + frekProc + "%"
@@ -181,7 +185,7 @@ module.exports = {
                                                 "Host": "www.chartgo.com",
                                                 "Cookie": cookie
                                             },
-                                            url: "https://www.chartgo.com//downloadSVG.do",
+                                            url: "https://www.chartgo.com/downloadSVG.do",
                                         }, function (err, res, body) {
                                             try {
                                                 (async () => {

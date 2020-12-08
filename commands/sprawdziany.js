@@ -168,7 +168,8 @@ module.exports = {
                                         }
                                     })
                                     if (jestSprawdzianem === "false") {
-                                        calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                        let caltest = calusienkie + dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
+                                        if (caltest.length < 1994) calusienkie += dataTekst + spacja(3 + liData - dataTekst.length) + opis + spacja(3 + liOpis - opis.length) + przedmiot + spacja(3 + liPrzedmiot - przedmiot.length) + nauczyciel + "\n"
                                     }
                                 })
                                 message.channel.send("```" + calusienkie + "```")
