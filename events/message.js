@@ -3,6 +3,7 @@ module.exports = (client, message) => {
     if (message.author.bot) return;
     if (message.content === "mucha") message.channel.send("rucha karalucha")
     if (message.content === "america") message.channel.send("FUCK YEAH!!!");
+    if (message.content.split(' ')[0] === "score") clinet.commands.get("score").execute(client, message, args);
     if (message.content.indexOf(client.config.prefix) !== 0) return;
 
     const args = message.content.slice(client.config.prefix.length).split(/ +/);
